@@ -18,7 +18,7 @@
 #include "frc2/command/Command.h"
 #include <frc/controller/ProfiledPIDController.h>
 #include <frc/geometry/Pose2d.h>
-#include "chassis/generated/CommandSwerveDrivetrain.h"
+#include "chassis/CANDriveSubsystem.h"
 #include "fielddata/DragonTargetFinder.h"
 
 class DriveToTarget : public frc2::CommandHelper<frc2::Command, DriveToTarget>

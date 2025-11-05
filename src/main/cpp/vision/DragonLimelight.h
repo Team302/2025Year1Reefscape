@@ -35,7 +35,7 @@
 #include "utils/logging/signals/DragonDataLogger.h"
 #include "vision/DragonVisionStructs.h"
 #include "chassis/pose/DragonVisionPoseEstimator.h"
-#include "chassis/ChassisConfigMgr.h"
+#include "chassis/CANDriveSubsystem.h"
 
 // Third Party Includes
 

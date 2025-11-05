@@ -17,7 +17,7 @@
 
 #include "frc2/command/CommandHelper.h"
 #include "frc2/command/Command.h"
-#include "chassis/generated/CommandSwerveDrivetrain.h"
+#include "chassis/CANDriveSubsystem.h"
 
 // FRC Includes
 #include "frc/Timer.h"
@@ -33,7 +33,7 @@ public:
      * @param chassis The swerve drive subsystem
      * @param trajectory The Choreo trajectory to follow
      */
-    explicit TrajectoryDrive(subsystems::CommandSwerveDrivetrain *chassis);
+    explicit TrajectoryDrive(CANDriveSubsystem *chassis);
 
     // FRC Command Lifecycle methods
     void Initialize() override;
@@ -48,7 +48,7 @@ public:
     units::time::second_t GetTotalTrajectoryTime() const { return m_totalTrajectoryTime; }
 
 private:
-    subsystems::CommandSwerveDrivetrain *m_chassis;
+    CANDriveSubsystem *m_chassis;
     std::string m_pathName;
 
     bool IsSamePose(frc::Pose2d currentPose, frc::Pose2d previousPose, frc::ChassisSpeeds velocity, double xyTolerance, double rotTolerance, double speedTolerance);

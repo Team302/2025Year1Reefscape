@@ -22,7 +22,6 @@
 #include "chassis/generated/CommandSwerveDrivetrain.h"
 #include "state/IRobotStateChangeSubscriber.h"
 #include "chassis/generated/Telemetry.h"
-#include "chassis/ChassisConfigMgr.h"
 #include "teleopcontrol/TeleopControl.h"
 #include "chassis/commands/TrajectoryDrive.h"
 

@@ -13,8 +13,8 @@
 
 class CANDriveSubsystem : public frc2::SubsystemBase {
  public:
-  CANDriveSubsystem();
 
+  static CANDriveSubsystem* GetInstance();
   void Periodic() override;
 
   void SimulationPeriodic() override;
@@ -22,10 +22,13 @@ class CANDriveSubsystem : public frc2::SubsystemBase {
   void ArcadeDrive(double xSpeed, double zRotation);
 
  private:
+  CANDriveSubsystem();
+
   rev::spark::SparkMax leftLeader;
   rev::spark::SparkMax leftFollower;
   rev::spark::SparkMax rightLeader;
   rev::spark::SparkMax rightFollower;
 
   frc::DifferentialDrive drive{leftLeader, rightLeader};
+  static CANDriveSubsystem *m_instance;
 };
