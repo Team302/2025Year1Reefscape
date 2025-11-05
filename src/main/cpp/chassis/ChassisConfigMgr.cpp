@@ -18,8 +18,6 @@
 #include "units/velocity.h"
 #include "chassis/generated/CommandSwerveDrivetrain.h"
 
-#include "chassis/generated/TunerConstants302.h"
-#include "chassis/generated/TunerConstants9998.h"
 #include "RobotIdentifier.h"
 
 ChassisConfigMgr *ChassisConfigMgr::m_instance = nullptr;
@@ -45,20 +43,25 @@ void ChassisConfigMgr::CreateDrivetrain()
 
     switch (id)
     {
-    case RobotIdentifier::COMP_BOT_302:
-        m_maxSpeed = TunerConstants302::kSpeedAt12Volts;
-        m_chassis = TunerConstants302::CreateDrivetrain(); // This returns a unique_ptr
-        break;
+    // case RobotIdentifier::COMP_BOT_302:
+    //     m_maxSpeed = TunerConstants302::kSpeedAt12Volts;
+    //     m_chassis = TunerConstants302::CreateDrivetrain(); // This returns a unique_ptr
+    //     break;
 
-    case RobotIdentifier::CHASSIS_BOT_9998:
+    // case RobotIdentifier::CHASSIS_BOT_9998:
+    //     m_maxSpeed = TunerConstants9998::kSpeedAt12Volts;
+    //     m_chassis = TunerConstants9998::CreateDrivetrain();
+    //     break;
+
+        case RobotIdentifier::YEAR1_BOT_2025:
         m_maxSpeed = TunerConstants9998::kSpeedAt12Volts;
         m_chassis = TunerConstants9998::CreateDrivetrain();
         break;
 
-    case RobotIdentifier::SIM_BOT_0:
-        m_maxSpeed = TunerConstants302::kSpeedAt12Volts;
-        m_chassis = TunerConstants302::CreateDrivetrain();
-        break;
+    // case RobotIdentifier::SIM_BOT_0:
+    //     m_maxSpeed = TunerConstants302::kSpeedAt12Volts;
+    //     m_chassis = TunerConstants302::CreateDrivetrain();
+    //     break;
 
     default:
         // Create a default or log an error if you want

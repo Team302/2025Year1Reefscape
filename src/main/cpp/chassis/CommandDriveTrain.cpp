@@ -1,10 +1,10 @@
-#include "chassis/generated/CommandSwerveDrivetrain.h"
+#include "chassis/generated/CommandDrivetrain.h"
 #include <frc/RobotController.h>
 #include "utils/FMSData.h"
 
 using namespace subsystems;
 
-void CommandSwerveDrivetrain::Periodic()
+void CommandDrivetrain::Periodic()
 {
     /*
      * Periodically try to apply the operator perspective.

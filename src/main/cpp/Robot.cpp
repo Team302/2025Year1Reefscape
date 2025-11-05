@@ -5,76 +5,203 @@
 #include "Robot.h"
 
 #include <frc2/command/CommandScheduler.h>
-#include <hal/FRCUsageReporting.h>
 
-void Robot::RobotInit() {
-  // Used for tracking use of KitBot template code, please do not remove
-  HAL_Report(HALUsageReporting::kResourceType_Framework, 9);
+#include "auton/AutonPreviewer.h"
+#include "auton/CyclePrimitives.h"
+#include "auton/drivePrimitives/AutonUtils.h"
+#include "chassis/ChassisConfigMgr.h"
+#include "chassis/pose/DragonSwervePoseEstimator.h"
+#include "configs/MechanismConfig.h"
+#include "configs/MechanismConfigMgr.h"
+#include "ctre/phoenix6/SignalLogger.hpp"
+#include "feedback/DriverFeedback.h"
+#include "fielddata/BargeHelper.h"
+#include "fielddata/BargeHelper.h"
+#include "fielddata/ReefHelper.h"
+#include "fielddata/ReefHelper.h"
+#include "frc/RobotController.h"
+#include "frc/Threads.h"
+#include "RobotIdentifier.h"
+#include "state/RobotState.h"
+#include "teleopcontrol/TeleopControl.h"
+#include "utils/DragonField.h"
+#include "utils/logging/debug/Logger.h"
+#include "utils/logging/signals/DragonDataLoggerMgr.h"
+#include "utils/PeriodicLooper.h"
+#include "utils/RoboRio.h"
+#include "utils/sensors/SensorData.h"
+#include "utils/sensors/SensorDataMgr.h"
+#include "vision/definitions/CameraConfig.h"
+#include "vision/definitions/CameraConfigMgr.h"
+#include "vision/DragonVision.h"
+#include "vision/DragonQuest.h"
+#include "chassis/SwerveContainer.h"
+
+Robot::Robot()
+{
+    Logger::GetLogger()->PutLoggingSelectionsOnDashboard();
+
+    InitializeRobot();
+    InitializeAutonOptions();
+    InitializeDriveteamFeedback();
+
+    BargeHelper::GetInstance();
+    ReefHelper::GetInstance();
+
+    m_datalogger = DragonDataLoggerMgr::GetInstance();
+
+    auto path = AutonUtils::GetTrajectoryFromPathFile("BlueLeftInside_I"); // load choreo library so we don't get loop overruns during autonperiodic
 }
 
-/**
- * This function is called every 20 ms, no matter the mode. Use
- * this for items like diagnostics that you want to run during disabled,
- * autonomous, teleoperated and test.
- *
- * <p> This runs after the mode specific periodic functions, but before
- * LiveWindow and SmartDashboard integrated updating.
- */
-void Robot::RobotPeriodic() { frc2::CommandScheduler::GetInstance().Run(); }
+void Robot::RobotPeriodic()
+{
+    frc2::CommandScheduler::GetInstance().Run();
 
-/**
- * This function is called once each time the robot enters Disabled mode. You
- * can use it to reset any subsystem information you want to clear when the
- * robot is disabled.
- */
-void Robot::DisabledInit() {}
+    isFMSAttached = frc::DriverStation::IsFMSAttached();
+    if (!isFMSAttached)
+    {
+        Logger::GetLogger()->PeriodicLog();
+    }
 
-void Robot::DisabledPeriodic() {}
+    // if (m_datalogger != nullptr && !frc::DriverStation::IsDisabled())
+    // {
+    //     m_datalogger->PeriodicDataLog();
+    // }
 
-/**
- * This autonomous runs the autonomous command selected by your {@link
- * RobotContainer} class.
- */
-void Robot::AutonomousInit() {
-  m_autonomousCommand = m_container.GetAutonomousCommand();
+    if (m_robotState != nullptr)
+    {
+        m_robotState->Run();
+    }
 
-  if (m_autonomousCommand) {
-    m_autonomousCommand->Schedule();
-  }
+    if (m_quest != nullptr)
+    {
+        m_quest->HandleHeartBeat();
+        m_quest->RefreshNT();
+    }
+
+    UpdateDriveTeamFeedback();
 }
 
-void Robot::AutonomousPeriodic() {}
-
-void Robot::TeleopInit() {
-  // This makes sure that the autonomous stops running when
-  // teleop starts running. If you want the autonomous to
-  // continue until interrupted by another command, remove
-  // this line or comment it out.
-  if (m_autonomousCommand) {
-    m_autonomousCommand->Cancel();
-  }
+void Robot::DisabledPeriodic()
+{
+    if (m_dragonswerveposeestimator != nullptr)
+    {
+        m_dragonswerveposeestimator->CalculateInitialPose();
+    }
 }
 
-/**
- * This function is called periodically during operator control.
- */
-void Robot::TeleopPeriodic() {}
+void Robot::AutonomousInit()
+{
+    frc::SetCurrentThreadPriority(true, 15);
 
-/**
- * This function is called periodically during test mode.
- */
-void Robot::TestPeriodic() {}
+    if (m_cyclePrims != nullptr)
+    {
+        m_cyclePrims->Init();
+    }
+    PeriodicLooper::GetInstance()->AutonRunCurrentState();
+}
 
-/**
- * This function is called once when the robot is first started up.
- */
-void Robot::SimulationInit() {}
+void Robot::AutonomousPeriodic()
+{
+    SensorDataMgr::GetInstance()->CacheData();
+    if (m_dragonswerveposeestimator != nullptr)
+    {
+        m_dragonswerveposeestimator->Update();
+    }
 
-/**
- * This function is called periodically whilst in simulation.
- */
-void Robot::SimulationPeriodic() {}
+    if (m_cyclePrims != nullptr)
+    {
+        m_cyclePrims->Run();
+    }
+    PeriodicLooper::GetInstance()->AutonRunCurrentState();
+}
+
+void Robot::TeleopInit()
+{
+    PeriodicLooper::GetInstance()->TeleopRunCurrentState();
+}
+
+void Robot::TeleopPeriodic()
+{
+    SensorDataMgr::GetInstance()->CacheData();
+    if (m_dragonswerveposeestimator != nullptr)
+    {
+        m_dragonswerveposeestimator->Update();
+    }
+    PeriodicLooper::GetInstance()->TeleopRunCurrentState();
+}
+
+void Robot::TestInit()
+{
+    frc2::CommandScheduler::GetInstance().CancelAll();
+}
+
+void Robot::InitializeRobot()
+{
+    int32_t teamNumber = frc::RobotController::GetTeamNumber();
+    FieldConstants::GetInstance();
+    RoboRio::GetInstance();
+    auto chassisConfig = ChassisConfigMgr::GetInstance();
+    chassisConfig->CreateDrivetrain();
+    m_container = SwerveContainer::GetInstance();
+
+    MechanismConfigMgr::GetInstance()->InitRobot((RobotIdentifier)teamNumber);
+
+    CameraConfigMgr::GetInstance()->InitCameras(static_cast<RobotIdentifier>(teamNumber));
+
+    m_dragonswerveposeestimator = DragonSwervePoseEstimator::GetInstance();
+
+    auto dragonVision = DragonVision::GetDragonVision();
+    if (dragonVision != nullptr)
+    {
+        auto visionPoseEstimators = dragonVision->GetPoseEstimators();
+        for (auto &poseEstimator : visionPoseEstimators)
+        {
+            m_dragonswerveposeestimator->RegisterVisionPoseEstimator(poseEstimator);
+        }
+        if (!visionPoseEstimators.empty())
+        {
+            if (CameraConfigMgr::GetInstance()->GetCurrentConfig()->GetQuestIndex() != -1)
+            {
+                m_quest = static_cast<DragonQuest *>(visionPoseEstimators[CameraConfigMgr::GetInstance()->GetCurrentConfig()->GetQuestIndex()]);
+            }
+        }
+    }
+
+    m_robotState = RobotState::GetInstance();
+    m_robotState->Init();
+}
+
+void Robot::InitializeAutonOptions()
+{
+    m_cyclePrims = new CyclePrimitives(); // intialize auton selections
+    m_previewer = new AutonPreviewer(m_cyclePrims);
+}
+void Robot::InitializeDriveteamFeedback()
+{
+    m_field = DragonField::GetInstance(); // TODO: move to drive team feedback
+}
+
+void Robot::UpdateDriveTeamFeedback()
+{
+    if (m_previewer != nullptr)
+    {
+        m_previewer->CheckCurrentAuton();
+    }
+    if (m_field != nullptr && m_dragonswerveposeestimator != nullptr)
+    {
+        m_field->UpdateRobotPosition(m_dragonswerveposeestimator->GetPose());
+    }
+    auto feedback = DriverFeedback::GetInstance();
+    if (feedback != nullptr)
+    {
+        feedback->UpdateFeedback();
+    }
+}
 
 #ifndef RUNNING_FRC_TESTS
-int main() { return frc::StartRobot<Robot>(); }
+int main()
+{
+    return frc::StartRobot<Robot>();
+}
 #endif
