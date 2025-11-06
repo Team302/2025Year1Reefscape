@@ -9,7 +9,7 @@
 
 #include <utility>
 
-#include "subsystems/CANDriveSubsystem.h"
+#include "chassis/CANDriveSubsystem.h"
 
 class DriveCommand : public frc2::CommandHelper<frc2::Command, DriveCommand> {
  public:

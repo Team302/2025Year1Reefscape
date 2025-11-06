@@ -10,6 +10,7 @@
 #include <frc2/command/CommandPtr.h>
 #include <frc2/command/SubsystemBase.h>
 #include <rev/SparkMax.h>
+#include <frc/geometry/Pose2d.h>
 
 class CANDriveSubsystem : public frc2::SubsystemBase {
  public:
@@ -21,6 +22,12 @@ class CANDriveSubsystem : public frc2::SubsystemBase {
 
   void ArcadeDrive(double xSpeed, double zRotation);
 
+  bool IsSamePose();
+
+  frc::Pose2d GetPose() {return frc::Pose2d();} //TODO: fix this;
+
+  void SetControl(){};
+
  private:
   CANDriveSubsystem();
 
@@ -31,4 +38,8 @@ class CANDriveSubsystem : public frc2::SubsystemBase {
 
   frc::DifferentialDrive drive{leftLeader, rightLeader};
   static CANDriveSubsystem *m_instance;
+  frc::Timer m_debounceTimer;
+  const units::time::second_t m_samePoseTime = 0.5_s;
+  const units::length::inch_t m_distanceThreshold{0.25};
+  frc::Pose2d m_prevPose;
 };

@@ -48,4 +48,9 @@ private:
     bool m_checkForDriveToUpdate;
     ZoneParams *m_zone;
     DragonTale *m_dragonTaleMgr;
+
+    frc::Timer m_debounceTimer;
+    const units::time::second_t m_samePoseTime = 0.5_s;
+    const units::length::inch_t m_distanceThreshold{0.25};
+    frc::Pose2d m_prevPose;
 };

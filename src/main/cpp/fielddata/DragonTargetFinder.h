@@ -24,6 +24,7 @@
 #include "units/angle.h"
 #include "vision/DragonVision.h"
 #include "utils/logging/signals/DragonDataLogger.h"
+#include "chassis/CANDriveSubsystem.h"
 
 enum class DragonTargetFinderTarget
 {
@@ -65,7 +66,7 @@ private:
     ~DragonTargetFinder() = default;
     static DragonTargetFinder *m_instance;
 
-    subsystems::CommandSwerveDrivetrain *m_chassis;
+    CANDriveSubsystem *m_chassis;
     DragonVision *m_vision;
     DragonTargetFinderTarget m_targetVisionTarget;
 

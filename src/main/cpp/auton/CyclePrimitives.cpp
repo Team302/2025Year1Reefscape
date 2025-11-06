@@ -33,7 +33,6 @@
 #include "auton/drivePrimitives/IPrimitive.h"
 #include "utils/logging/debug/Logger.h"
 
-#include "chassis/ChassisConfigMgr.h"
 #include "chassis/ChassisOptionEnums.h"
 
 #include "mechanisms/DragonTale/DragonTale.h"
@@ -64,8 +63,7 @@ CyclePrimitives::CyclePrimitives() : State(string("CyclePrimitives"), 0),
 									 m_chassis(),
 									 m_updatedHeadingOption()
 {
-	auto chassisConfig = ChassisConfigMgr::GetInstance();
-	m_chassis = chassisConfig != nullptr ? chassisConfig->GetSwerveChassis() : nullptr;
+	m_chassis = CANDriveSubsystem::GetInstance();
 }
 
 void CyclePrimitives::Init()

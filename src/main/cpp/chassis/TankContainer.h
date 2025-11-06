@@ -39,4 +39,6 @@ private:
     frc2::CommandPtr m_driveToRightCage;
     frc2::CommandPtr m_driveToCenterCage;
     frc2::CommandPtr m_driveToAlgae;
+    std::unique_ptr<TrajectoryDrive> m_trajectoryDrive;
+
 };

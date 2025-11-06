@@ -33,8 +33,7 @@
 #include "auton/PrimitiveParser.h"
 #include "auton/drivePrimitives/AutonUtils.h"
 #include "utils/logging/debug/Logger.h"
-#include "chassis/ChassisConfigMgr.h"
-#include "chassis/generated/CommandSwerveDrivetrain.h"
+#include "chassis/CANDriveSubsystem.h"
 
 // Thirdparty includes
 using frc::ChassisSpeeds;

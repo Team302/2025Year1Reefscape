@@ -13,7 +13,7 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 #include "chassis/pose/DragonSwervePoseEstimator.h"
-#include "chassis/ChassisConfigMgr.h"
+#include "chassis/CANDriveSubsystem.h"
 #include "state/RobotState.h"
 #include "state/RobotStateChanges.h"
 #include "vision/DragonVision.h"

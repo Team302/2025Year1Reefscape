@@ -14,7 +14,6 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#include "chassis/ChassisConfigMgr.h"
 #include "fielddata/CoralStationHelper.h"
 #include "frc/DriverStation.h"
 #include "utils/FMSData.h"
@@ -29,7 +28,7 @@ CoralStationHelper *CoralStationHelper::GetInstance()
     return CoralStationHelper::m_instance;
 }
 
-CoralStationHelper::CoralStationHelper() : m_chassis(ChassisConfigMgr::GetInstance()->GetSwerveChassis()),
+CoralStationHelper::CoralStationHelper() : m_chassis(CANDriveSubsystem::GetInstance()),
                                            m_allianceColor(FMSData::GetAllianceColor()),
                                            m_fieldConstants(FieldConstants::GetInstance())
 {

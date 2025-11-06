@@ -30,7 +30,7 @@
 #include "auton/drivePrimitives/AutonUtils.h"
 
 TrajectoryDrive::TrajectoryDrive(
-    subsystems::CommandSwerveDrivetrain *chassis) : m_chassis(chassis),
+    CANDriveSubsystem *chassis) : m_chassis(chassis),
                                                     m_pathName(""),
                                                     m_trajectoryStates(),
                                                     m_prevPose(),

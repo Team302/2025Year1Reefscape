@@ -73,3 +73,23 @@ void CANDriveSubsystem::SimulationPeriodic() {}
 void CANDriveSubsystem::ArcadeDrive(double xSpeed, double zRotation) {
   drive.ArcadeDrive(xSpeed, zRotation);
 }
+bool CANDriveSubsystem::IsSamePose()
+
+{
+    bool isCurrentlyStopped = GetPose().Translation().Distance(m_prevPose.Translation()) < m_distanceThreshold;
+
+    if (isCurrentlyStopped)
+    {
+        if (!m_debounceTimer.IsRunning())
+        {
+            m_debounceTimer.Start();
+        }
+    }
+    else
+    {
+        m_debounceTimer.Reset();
+    }
+    m_prevPose = GetPose();
+
+    return m_debounceTimer.HasElapsed(m_samePoseTime);
+}

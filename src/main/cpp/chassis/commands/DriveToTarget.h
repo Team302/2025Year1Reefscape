@@ -30,7 +30,7 @@ public:
      * @param chassis A pointer to the swerve drive subsystem.
      * @param target The specific field element to target.
      */
-    DriveToTarget(subsystems::CommandSwerveDrivetrain *chassis, DragonTargetFinderTarget target);
+    DriveToTarget(CANDriveSubsystem *chassis, DragonTargetFinderTarget target);
 
     // FRC Command Lifecycle methods
     void Initialize() override;
@@ -41,7 +41,7 @@ public:
 private:
     void CalculateFeedForward(frc::ChassisSpeeds &chassisSpeeds);
 
-    subsystems::CommandSwerveDrivetrain *m_chassis;
+    CANDriveSubsystem *m_chassis;
     DragonTargetFinderTarget m_target;
     DragonTargetFinder *m_targetFinder;
     DragonTargetFinderData m_currentType = DragonTargetFinderData::NOT_FOUND;

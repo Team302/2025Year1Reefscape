@@ -79,5 +79,5 @@ private:
 
     frc::ChassisSpeeds m_chassisSpeeds;
 
-    swerve::requests::FieldCentric m_driveRequest;
+    // swerve::requests::FieldCentric m_driveRequest;
 };
