@@ -19,7 +19,7 @@
 #include "frc2/command/Command.h"
 #include <frc2/command/CommandScheduler.h>
 #include "auton/ZoneParams.h"
-#include "chassis/generated/CommandSwerveDrivetrain.h"
+#include "chassis/CANDriveSubsystem.h"
 #include "mechanisms/DragonTale/DragonTale.h"
 #include "auton/PrimitiveEnums.h"
 
@@ -38,7 +38,7 @@ private:
     bool IsInZone();
     int FindDriveToZoneIndex(ZoneParamsVector zones);
 
-    subsystems::CommandSwerveDrivetrain *m_chassis;
+    CANDriveSubsystem *m_chassis;
     std::unique_ptr<frc::Timer> m_timer;
     frc2::CommandPtr m_managedCommand;
 

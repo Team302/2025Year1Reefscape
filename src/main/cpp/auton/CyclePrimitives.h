@@ -27,7 +27,7 @@
 #include "chassis/ChassisOptionEnums.h"
 #include "state/State.h"
 #include "auton/ZoneParams.h"
-#include "chassis/generated/CommandSwerveDrivetrain.h"
+#include "chassis/CANDriveSubsystem.h"
 // Third Party Includes
 
 class AutonSelector;
@@ -66,7 +66,7 @@ private:
 	std::unique_ptr<frc::Timer> m_timer;
 	units::time::second_t m_maxTime;
 	bool m_isDone;
-	subsystems::CommandSwerveDrivetrain *m_chassis;
+	CANDriveSubsystem *m_chassis;
 	ChassisOptionEnums::PathUpdateOption m_updatedHeadingOption;
 	ZoneParamsVector m_zones;
 };

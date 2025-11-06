@@ -21,8 +21,7 @@
 // 302 Includes
 #include <auton/drivePrimitives/VisionDrivePrimitive.h>
 #include <chassis/ChassisOptionEnums.h>
-
-#include "chassis/ChassisConfigMgr.h"
+#include "chassis/CANDriveSubsystem.h"
 
 /// DEBUGGING
 #include "utils/logging/debug/Logger.h"
@@ -35,8 +34,7 @@ VisionDrivePrimitive::VisionDrivePrimitive() : IPrimitive(),
                                                m_timer(new frc::Timer()),
                                                m_timeout(0.0)
 {
-    auto config = ChassisConfigMgr::GetInstance();
-    m_chassis = config != nullptr ? config->GetSwerveChassis() : nullptr;
+    m_chassis = CANDriveSubsystem::GetInstance();
 }
 
 void VisionDrivePrimitive::Init(PrimitiveParams *params)

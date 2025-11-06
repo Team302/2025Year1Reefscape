@@ -14,10 +14,9 @@
 //====================================================================================================================================================
 #pragma once
 #include <vector>
-#include "chassis/ChassisConfigMgr.h"
 #include "chassis/pose/DragonVisionPoseEstimator.h"
 #include "frc/geometry/Pose2d.h"
-#include "chassis/generated/CommandSwerveDrivetrain.h"
+#include "chassis/CANDriveSubsystem.h"
 
 class DragonSwervePoseEstimator
 {

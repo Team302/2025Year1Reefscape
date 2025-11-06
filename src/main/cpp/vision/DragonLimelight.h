@@ -218,7 +218,7 @@ protected:
 
     // from old dragon camera
     std::string m_cameraName;
-    subsystems::CommandSwerveDrivetrain *m_chassis;
+    CANDriveSubsystem *m_chassis;
     frc::Pose3d m_cameraPose;
     const double m_maxRotationRateDegreesPerSec = 720.0;
     const double m_yawRate = 0.0;
