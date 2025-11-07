@@ -21,6 +21,8 @@
 #include "utils/logging/debug/Logger.h"
 #include "frc2/command/Commands.h"
 #include <frc2/command/ProxyCommand.h>
+#include "chassis/TankRequest.h"
+#include "chassis/SwerveContainer.h"
 
 AutonDrivePrimitive::AutonDrivePrimitive() : m_chassis(CANDriveSubsystem::GetInstance()),
                                              m_timer(std::make_unique<frc::Timer>()),
@@ -56,7 +58,7 @@ void AutonDrivePrimitive::Init(PrimitiveParams *params)
     {
     case PRIMITIVE_IDENTIFIER::TRAJECTORY_DRIVE:
     {
-        auto container = CANDriveSubsystem::GetInstance();
+        auto container = TankContainer::GetInstance();
         auto trajectoryDriveCmd = container->GetTrajectoryDriveCommand();
         trajectoryDriveCmd->SetPath(params->GetTrajectoryName());
         m_managedCommand = frc2::ProxyCommand(trajectoryDriveCmd).ToPtr();
@@ -75,7 +77,7 @@ void AutonDrivePrimitive::Init(PrimitiveParams *params)
     case PRIMITIVE_IDENTIFIER::DO_NOTHING_MECHANISMS:
     {
         m_managedCommand = frc2::cmd::RunOnce([this]()
-                                              { m_chassis->SetControl(swerve::requests::SwerveDriveBrake{}); }, {m_chassis});
+                                              { m_chassis->SetControl(drive::tank::requests::TankDriveBrake{});}, {m_chassis});
         break;
     }
 
@@ -156,7 +158,7 @@ bool AutonDrivePrimitive::IsInZone()
 
 frc2::CommandPtr AutonDrivePrimitive::CreateDriveToTargetCommand(ChassisOptionEnums::DriveStateType driveToType)
 {
-    auto container = CANDriveSubsystem::GetInstance();
+    auto container = TankContainer::GetInstance();
     switch (driveToType)
     {
     case ChassisOptionEnums::DRIVE_TO_CORAL_STATION:

@@ -15,7 +15,7 @@
 class CANDriveSubsystem : public frc2::SubsystemBase {
  public:
 
-  static CANDriveSubsystem* GetInstance();
+  static CANDriveSubsystem *GetInstance();
   void Periodic() override;
 
   void SimulationPeriodic() override;
