@@ -123,9 +123,13 @@ public:
         if (units::math::abs(v) < Deadband) v = 0_mps;
         if (units::math::abs(w) < RotationalDeadband) w = 0_rad_per_s;
 
-        auto turnLever = parameters.kTrackWidth / 2.0;
-        auto vLeft  = v - turnLever * w;
-        auto vRight = v + turnLever * w;
+        // Half track width lever arm
+        auto turnLever = parameters.kTrackWidth / 2.0; // length (meters)
+        // Convert angular rate (rad/s) -> 1/s by dividing by 1_rad, then * meters => meters/s
+        units::meters_per_second_t turnComponent = turnLever * (w / 1_rad);
+
+        auto vLeft  = v - turnComponent;
+        auto vRight = v + turnComponent;
 
         if (DesaturateWheelSpeeds && parameters.kMaxSpeed > 0_mps) {
             auto maxMag = units::math::max(units::math::abs(vLeft), units::math::abs(vRight));
@@ -177,9 +181,13 @@ public:
         if (units::math::abs(v) < Deadband) v = 0_mps;
         if (units::math::abs(w) < RotationalDeadband) w = 0_rad_per_s;
 
-        auto turnLever = parameters.kTrackWidth / 2.0;
-        auto vLeft  = v - turnLever * w;
-        auto vRight = v + turnLever * w;
+        // Half track width lever arm
+        auto turnLever = parameters.kTrackWidth / 2.0; // length (meters)
+        // Convert angular rate (rad/s) -> 1/s by dividing by 1_rad, then * meters => meters/s
+        units::meters_per_second_t turnComponent = turnLever * (w / 1_rad);
+
+        auto vLeft  = v - turnComponent;
+        auto vRight = v + turnComponent;
 
         if (DesaturateWheelSpeeds && parameters.kMaxSpeed > 0_mps) {
             auto maxMag = units::math::max(units::math::abs(vLeft), units::math::abs(vRight));
