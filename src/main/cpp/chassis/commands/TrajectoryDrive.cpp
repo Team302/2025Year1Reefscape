@@ -28,6 +28,7 @@
 #include "chassis/commands/TrajectoryDrive.h"
 #include "utils/logging/debug/Logger.h"
 #include "auton/drivePrimitives/AutonUtils.h"
+#include "chassis/TankRequest.h"
 
 TrajectoryDrive::TrajectoryDrive(
     CANDriveSubsystem *chassis) : m_chassis(chassis),
@@ -138,7 +139,7 @@ bool TrajectoryDrive::IsFinished()
 void TrajectoryDrive::End(bool interrupted)
 {
     // When the command ends (or is interrupted), stop the robot.
-    m_chassis->SetControl(swerve::requests::SwerveDriveBrake{});
+    m_chassis->SetControl(drive::tank::requests::TankDriveBrake{});
 }
 
 bool TrajectoryDrive::IsSamePose(frc::Pose2d currentPose, frc::Pose2d previousPose, frc::ChassisSpeeds velocity, double xyTolerance, double rotTolerance, double speedTolerance)

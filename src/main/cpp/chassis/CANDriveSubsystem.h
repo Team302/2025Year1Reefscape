@@ -11,22 +11,22 @@
 #include <frc2/command/SubsystemBase.h>
 #include <rev/SparkMax.h>
 #include <frc/geometry/Pose2d.h>
+#include "TankRequest.h" // Include the TankRequest header for request types
 
 class CANDriveSubsystem : public frc2::SubsystemBase {
  public:
-
   static CANDriveSubsystem *GetInstance();
   void Periodic() override;
-
   void SimulationPeriodic() override;
-
   void ArcadeDrive(double xSpeed, double zRotation);
-
   bool IsSamePose();
+  frc::Pose2d GetPose() { return frc::Pose2d(); } // TODO: fix this;
 
-  frc::Pose2d GetPose() {return frc::Pose2d();} //TODO: fix this;
-
-  void SetControl(){};
+  // Overloaded SetControl functions for different request types
+  void SetControl(const drive::tank::requests::FieldCentric& request);
+  void SetControl(const drive::tank::requests::RobotCentric& request);
+  void SetControl(const drive::tank::requests::TankDriveBrake& request);
+  void SetControl(const drive::tank::requests::Idle& request);
 
  private:
   CANDriveSubsystem();

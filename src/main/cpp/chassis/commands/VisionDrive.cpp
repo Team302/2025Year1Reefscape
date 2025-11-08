@@ -14,9 +14,11 @@
 //====================================================================================================================================================
 
 #include "chassis/commands/VisionDrive.h"
+#include "chassis/TankRequest.h"
+
 
 // Note the simplified constructor and AddRequirements call
-VisionDrive::VisionDrive(subsystems::CommandSwerveDrivetrain *chassis,
+VisionDrive::VisionDrive(CANDriveSubsystem *chassis,
                          TeleopControl *controller,
                          units::velocity::meters_per_second_t maxSpeed,
                          units::angular_velocity::degrees_per_second_t maxAngularRate) : m_chassis(chassis),
@@ -51,7 +53,6 @@ void VisionDrive::Execute()
 
         m_chassis->SetControl(
             m_RobotDriveRequest.WithVelocityX(forward)
-                .WithVelocityY(0_mps)
                 .WithRotationalRate(rotate));
     }
     else
@@ -62,7 +63,6 @@ void VisionDrive::Execute()
 
         m_chassis->SetControl(
             m_fieldDriveRequest.WithVelocityX(forward * m_maxSpeed)
-                .WithVelocityY(strafe * m_maxSpeed)
                 .WithRotationalRate(rotate * m_maxAngularRate));
     }
 }
@@ -76,5 +76,5 @@ bool VisionDrive::IsFinished()
 
 void VisionDrive::End(bool interrupted)
 {
-    m_chassis->SetControl(swerve::requests::SwerveDriveBrake{});
+    m_chassis->SetControl(drive::tank::requests::TankDriveBrake{});
 }

@@ -3,16 +3,17 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "CANDriveSubsystem.h"
+#include "TankRequest.h"
 
 using namespace DriveConstants;
+// Singleton instance
+CANDriveSubsystem* CANDriveSubsystem::m_instance = nullptr;
 
 CANDriveSubsystem* CANDriveSubsystem::GetInstance() {
-  if (m_instance == nullptr) 
-  {
+  if (m_instance == nullptr) {
     m_instance = new CANDriveSubsystem();
-    return m_instance;
   }
-
+  return m_instance;
 }
 
 // class to drive the robot over CAN
@@ -73,23 +74,44 @@ void CANDriveSubsystem::SimulationPeriodic() {}
 void CANDriveSubsystem::ArcadeDrive(double xSpeed, double zRotation) {
   drive.ArcadeDrive(xSpeed, zRotation);
 }
-bool CANDriveSubsystem::IsSamePose()
 
-{
-    bool isCurrentlyStopped = GetPose().Translation().Distance(m_prevPose.Translation()) < m_distanceThreshold;
+bool CANDriveSubsystem::IsSamePose() {
+  bool isCurrentlyStopped = GetPose().Translation().Distance(m_prevPose.Translation()) < m_distanceThreshold;
 
-    if (isCurrentlyStopped)
-    {
-        if (!m_debounceTimer.IsRunning())
-        {
-            m_debounceTimer.Start();
-        }
+  if (isCurrentlyStopped) {
+    if (!m_debounceTimer.IsRunning()) {
+      m_debounceTimer.Start();
     }
-    else
-    {
-        m_debounceTimer.Reset();
-    }
-    m_prevPose = GetPose();
+  } else {
+    m_debounceTimer.Stop();
+    m_debounceTimer.Reset();
+  }
 
-    return m_debounceTimer.HasElapsed(m_samePoseTime);
+  return m_debounceTimer.HasElapsed(m_samePoseTime);
+}
+
+// Overloaded SetControl for FieldCentric
+void CANDriveSubsystem::SetControl(const drive::tank::requests::FieldCentric& request) {
+  // Apply FieldCentric control logic
+  leftLeader.Set(request.VelocityForward.to<double>());
+  rightLeader.Set(request.VelocityForward.to<double>());
+}
+
+// Overloaded SetControl for RobotCentric
+void CANDriveSubsystem::SetControl(const drive::tank::requests::RobotCentric& request) {
+  // Apply RobotCentric control logic
+  leftLeader.Set(request.VelocityForward.to<double>());
+  rightLeader.Set(request.VelocityForward.to<double>());
+}
+
+// Overloaded SetControl for TankDriveBrake
+void CANDriveSubsystem::SetControl(const drive::tank::requests::TankDriveBrake& request) {
+  // Apply TankDriveBrake control logic (stop the motors)
+  leftLeader.Set(0.0);
+  rightLeader.Set(0.0);
+}
+
+// Overloaded SetControl for Idle
+void CANDriveSubsystem::SetControl(const drive::tank::requests::Idle& request) {
+  // Apply Idle control logic (do nothing)
 }

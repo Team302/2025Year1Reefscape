@@ -12,6 +12,10 @@
 #include "units/velocity.h"
 #include "units/voltage.h"
 
+#include "frc/geometry/Rotation2d.h"
+
+using namespace frc;
+
 namespace drive {
 namespace tank {
 namespace requests {
@@ -20,12 +24,6 @@ namespace requests {
 enum class DriveRequestType {
     OpenLoopVoltage,
     Velocity,
-};
-
-// Minimal rotation representation
-struct Rotation2d {
-    units::radian_t radians{0_rad};
-    units::radian_t Radians() const { return radians; }
 };
 
 // Chassis speeds (forward + yaw rate)
@@ -144,8 +142,8 @@ public:
         }
     }
 
-    FieldCentric& WithVelocityForward(units::meters_per_second_t v) & { VelocityForward = v; return *this; }
-    FieldCentric&& WithVelocityForward(units::meters_per_second_t v) && { VelocityForward = v; return std::move(*this); }
+    FieldCentric& WithVelocityX(units::meters_per_second_t v) & { VelocityForward = v; return *this; }
+    FieldCentric&& WithVelocityX(units::meters_per_second_t v) && { VelocityForward = v; return std::move(*this); }
     FieldCentric& WithRotationalRate(units::radians_per_second_t w) & { RotationalRate = w; return *this; }
     FieldCentric&& WithRotationalRate(units::radians_per_second_t w) && { RotationalRate = w; return std::move(*this); }
     FieldCentric& WithDeadband(units::meters_per_second_t db) & { Deadband = db; return *this; }
@@ -198,8 +196,8 @@ public:
         }
     }
 
-    RobotCentric& WithVelocityForward(units::meters_per_second_t v) & { VelocityForward = v; return *this; }
-    RobotCentric&& WithVelocityForward(units::meters_per_second_t v) && { VelocityForward = v; return std::move(*this); }
+    RobotCentric& WithVelocityX(units::meters_per_second_t v) & { VelocityForward = v; return *this; }
+    RobotCentric&& WithVelocityX(units::meters_per_second_t v) && { VelocityForward = v; return std::move(*this); }
     RobotCentric& WithRotationalRate(units::radians_per_second_t w) & { RotationalRate = w; return *this; }
     RobotCentric&& WithRotationalRate(units::radians_per_second_t w) && { RotationalRate = w; return std::move(*this); }
     RobotCentric& WithDeadband(units::meters_per_second_t db) & { Deadband = db; return *this; }
@@ -303,8 +301,8 @@ public:
         fc.Apply(parameters, sidesToApply);
     }
 
-    FieldCentricFacingAngle& WithVelocityForward(units::meters_per_second_t v) & { VelocityForward = v; return *this; }
-    FieldCentricFacingAngle&& WithVelocityForward(units::meters_per_second_t v) && { VelocityForward = v; return std::move(*this); }
+    FieldCentricFacingAngle& WithVelocityX(units::meters_per_second_t v) & { VelocityForward = v; return *this; }
+    FieldCentricFacingAngle&& WithVelocityX(units::meters_per_second_t v) && { VelocityForward = v; return std::move(*this); }
     FieldCentricFacingAngle& WithTargetDirection(Rotation2d t) & { TargetDirection = t; return *this; }
     FieldCentricFacingAngle&& WithTargetDirection(Rotation2d t) && { TargetDirection = t; return std::move(*this); }
     FieldCentricFacingAngle& WithTargetRateFeedforward(units::radians_per_second_t ff) & { TargetRateFeedforward = ff; return *this; }
@@ -360,8 +358,8 @@ public:
         rc.Apply(parameters, sidesToApply);
     }
 
-    RobotCentricFacingAngle& WithVelocityForward(units::meters_per_second_t v) & { VelocityForward = v; return *this; }
-    RobotCentricFacingAngle&& WithVelocityForward(units::meters_per_second_t v) && { VelocityForward = v; return std::move(*this); }
+    RobotCentricFacingAngle& WithVelocityX(units::meters_per_second_t v) & { VelocityForward = v; return *this; }
+    RobotCentricFacingAngle&& WithVelocityX(units::meters_per_second_t v) && { VelocityForward = v; return std::move(*this); }
     RobotCentricFacingAngle& WithTargetDirection(Rotation2d t) & { TargetDirection = t; return *this; }
     RobotCentricFacingAngle&& WithTargetDirection(Rotation2d t) && { TargetDirection = t; return std::move(*this); }
     RobotCentricFacingAngle& WithTargetRateFeedforward(units::radians_per_second_t ff) & { TargetRateFeedforward = ff; return *this; }
