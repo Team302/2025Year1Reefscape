@@ -21,6 +21,7 @@
 #include "chassis/CANDriveSubsystem.h"
 #include "fielddata/DragonTargetFinder.h"
 #include "chassis/TankRequest.h"
+#include "units/angular_acceleration.h"
 
 class DriveToTarget : public frc2::CommandHelper<frc2::Command, DriveToTarget>
 {
@@ -60,8 +61,7 @@ private:
     const units::length::meter_t m_ffMaxRadius{1.25};
 
     const units::velocity::meters_per_second_t kMaxVelocity = 4_mps;
-    const units::acceleration::meters_per_second_squared_t kMaxAcceleration = 4_mps_sq;
-
+    const units::acceleration::meters_per_second_squared_t kMaxAcceleration{4_mps_sq};
     const units::angular_velocity::degrees_per_second_t kMaxAngularVelocity = 540_deg_per_s;
 
     std::string m_iGainKey = "I_Gain";

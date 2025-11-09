@@ -28,7 +28,7 @@
 // Team 302 Includes
 #include "vision/DragonVisionStructs.h"
 #include "vision/DragonLimelight.h"
-
+#include "chassis/CANDriveSubsystem.h"
 #include "configs/RobotElementNames.h"
 #include "fielddata/FieldConstants.h"
 

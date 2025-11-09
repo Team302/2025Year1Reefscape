@@ -28,6 +28,9 @@ class CANDriveSubsystem : public frc2::SubsystemBase {
   void SetControl(const drive::tank::requests::TankDriveBrake& request);
   void SetControl(const drive::tank::requests::Idle& request);
 
+  void ResetPose(frc::Pose2d pose);
+  void ResetSamePose();
+
  private:
   CANDriveSubsystem();
 

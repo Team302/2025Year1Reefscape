@@ -91,9 +91,8 @@ void TrajectoryDrive::Execute()
 
     m_chassis->SetControl(
         m_driveRequest.WithVelocityX(m_chassisSpeeds.vx)
-            .WithVelocityY(m_chassisSpeeds.vy)
             .WithRotationalRate(m_chassisSpeeds.omega)
-            .WithForwardPerspective(ctre::phoenix6::swerve::requests::ForwardPerspectiveValue::BlueAlliance));
+            .WithForwardPerspective(drive::tank::requests::ForwardPerspectiveValue::BLUE_ALLIANCE));
 }
 
 bool TrajectoryDrive::IsFinished()

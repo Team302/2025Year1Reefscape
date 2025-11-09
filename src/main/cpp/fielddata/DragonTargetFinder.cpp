@@ -17,7 +17,6 @@
 #include <optional>
 #include <string>
 
-#include "chassis/ChassisConfigMgr.h"
 #include "fielddata/BargeHelper.h"
 #include "fielddata/CoralStationHelper.h"
 #include "fielddata/DragonTargetFinder.h"
@@ -52,7 +51,7 @@ DragonTargetFinder *DragonTargetFinder::GetInstance()
     return DragonTargetFinder::m_instance;
 }
 
-DragonTargetFinder::DragonTargetFinder() : m_chassis(ChassisConfigMgr::GetInstance()->GetSwerveChassis()), m_vision(DragonVision::GetDragonVision())
+DragonTargetFinder::DragonTargetFinder() : m_chassis(CANDriveSubsystem::GetInstance()), m_vision(DragonVision::GetDragonVision())
 {
 }
 
@@ -297,7 +296,7 @@ void DragonTargetFinder::SetChassis()
 {
     if (m_chassis == nullptr)
     {
-        m_chassis = ChassisConfigMgr::GetInstance()->GetSwerveChassis();
+        m_chassis = CANDriveSubsystem::GetInstance();
     }
 }
 

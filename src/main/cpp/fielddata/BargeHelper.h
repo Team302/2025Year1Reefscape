@@ -29,6 +29,7 @@
 #include "auton/ZoneParser.h"
 #include "auton/ZoneParams.h"
 #include "fielddata/DragonTargetFinder.h"
+#include "chassis/CANDriveSubsystem.h"
 
 enum class BargeZones
 {
@@ -57,7 +58,7 @@ private:
     std::optional<BargeZones> GetClosestZone();
     void CalculateZones();
 
-    subsystems::CommandSwerveDrivetrain *m_chassis;
+    CANDriveSubsystem *m_chassis;
     FieldConstants *m_fieldConstants;
 
     // blue

@@ -36,7 +36,7 @@ public:
 private:
     static DragonSwervePoseEstimator *m_instance;
 
-    subsystems::CommandSwerveDrivetrain *m_chassis = ChassisConfigMgr::GetInstance()->GetSwerveChassis();
+    CANDriveSubsystem *m_chassis;
 
     std::vector<DragonVisionPoseEstimator *> m_visionPoseEstimators;
 

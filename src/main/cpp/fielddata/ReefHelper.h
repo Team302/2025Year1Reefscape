@@ -24,6 +24,7 @@
 #include "auton/ZoneParams.h"
 #include "auton/ZoneParser.h"
 #include "state/RobotState.h"
+#include "chassis/CANDriveSubsystem.h"
 class ReefHelper
 {
 public:
@@ -41,7 +42,7 @@ private:
 
     units::length::meter_t CalcDistanceToAprilTag(FieldConstants::AprilTagIDs tag, frc::Pose2d currentPose);
 
-    subsystems::CommandSwerveDrivetrain *m_chassis;
+    CANDriveSubsystem *m_chassis;
     frc::DriverStation::Alliance m_allianceColor;
     FieldConstants *m_fieldConstants;
 

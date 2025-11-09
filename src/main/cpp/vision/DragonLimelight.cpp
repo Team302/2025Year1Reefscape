@@ -34,7 +34,6 @@
 #include "frc/RobotBase.h"
 
 // Team 302 includes
-#include "chassis/ChassisConfigMgr.h"
 #include "chassis/pose/DragonSwervePoseEstimator.h"
 #include "vision/DragonLimelight.h"
 #include "utils/logging/debug/Logger.h"
@@ -71,7 +70,7 @@ DragonLimelight::DragonLimelight(
                                          DragonDataLogger(),
                                          m_identifier(identifier),
                                          m_networktable(nt::NetworkTableInstance::GetDefault().GetTable(std::string(networkTableName))),
-                                         m_chassis(ChassisConfigMgr::GetInstance()->GetSwerveChassis()),
+                                         m_chassis(CANDriveSubsystem::GetInstance()),
                                          m_cameraPose(frc::Pose3d(mountingXOffset, mountingYOffset, mountingZOffset, frc::Rotation3d(roll, pitch, yaw)))
 {
     SetLEDMode(ledMode);
@@ -585,7 +584,7 @@ std::optional<VisionData> DragonLimelight::GetDataToSpecifiedTag(int id)
 
 DragonVisionPoseEstimatorStruct DragonLimelight::GetPoseEstimate()
 {
-    if (m_chassis != nullptr && ChassisConfigMgr::GetInstance()->GetRotationRateDegreesPerSecond() < m_maxRotationRateDegreesPerSec)
+    if (m_chassis != nullptr && CANDriveSubsystem::GetInstance()->GetRotationRateDegreesPerSecond() < m_maxRotationRateDegreesPerSec)
     {
 
         LimelightHelpers::SetRobotOrientation(GetCameraName(),
@@ -650,7 +649,7 @@ void DragonLimelight::SetRobotPose(const frc::Pose2d &pose)
     auto rollrate = 0.0;
     if (m_chassis != nullptr)
     {
-        yawrate = ChassisConfigMgr::GetInstance()->GetRotationRateDegreesPerSecond();
+        yawrate = CANDriveSubsystem::GetInstance()->GetRotationRateDegreesPerSecond();
         pitch = GetCameraPitch().value();
         roll = GetCameraRoll().value();
     }

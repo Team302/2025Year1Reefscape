@@ -12,7 +12,7 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
-#include "chassis/commands/DriveToTarget.h" // Update path if needed
+#include "chassis/commands/DriveToTarget.h"
 #include "utils/AngleUtils.h"
 #include "utils/logging/debug/Logger.h"
 #include "frc/geometry/Rotation2d.h"
@@ -22,7 +22,7 @@
 #include "fielddata/BargeHelper.h"
 
 DriveToTarget::DriveToTarget(
-    subsystems::CommandSwerveDrivetrain *chassis,
+    CANDriveSubsystem *chassis,
     DragonTargetFinderTarget target) : m_chassis(chassis),
                                        m_target(target),
                                        m_targetFinder(DragonTargetFinder::GetInstance()),
@@ -91,18 +91,15 @@ void DriveToTarget::Execute()
                 else
                 {
                     chassisSpeeds.vx += units::velocity::meters_per_second_t(m_translationPIDX.Calculate(m_currentPose.X(), m_endPose.X()));
-                    chassisSpeeds.vy += units::velocity::meters_per_second_t(m_translationPIDY.Calculate(m_currentPose.Y(), m_endPose.Y()));
                     chassisSpeeds.vx = std::clamp(chassisSpeeds.vx, -kMaxVelocity, kMaxVelocity);
-                    chassisSpeeds.vy = std::clamp(chassisSpeeds.vy, -kMaxVelocity, kMaxVelocity);
                 }
             }
         }
         m_chassis->SetControl(
             m_driveRequest.WithVelocityX(chassisSpeeds.vx)
-                .WithVelocityY(chassisSpeeds.vy)
                 .WithTargetDirection(m_endPose.Rotation().Degrees())
                 .WithHeadingPID(m_rotationKP, m_rotationKI, m_rotationKD)
-                .WithForwardPerspective(ctre::phoenix6::swerve::requests::ForwardPerspectiveValue::BlueAlliance));
+                .WithForwardPerspective(drive::tank::requests::ForwardPerspectiveValue::BLUE_ALLIANCE));
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "DriveToFieldElement", "Error", m_endPose.Translation().Distance(m_currentPose.Translation()).value());
     }
 
@@ -144,7 +141,7 @@ bool DriveToTarget::IsFinished()
 
 void DriveToTarget::End(bool interrupted)
 {
-    m_chassis->SetControl(swerve::requests::SwerveDriveBrake{});
+    m_chassis->SetControl(drive::tank::requests::TankDriveBrake{});
 }
 
 void DriveToTarget::CalculateFeedForward(frc::ChassisSpeeds &chassisSpeeds)

@@ -22,6 +22,7 @@
 
 #include "fielddata/FieldConstants.h"
 #include "frc/geometry/Pose2d.h"
+#include "chassis/CANDriveSubsystem.h"
 
 class ProcessorHelper
 {
@@ -35,6 +36,6 @@ private:
     ~ProcessorHelper() = default;
     static ProcessorHelper *m_instance;
 
-    subsystems::CommandSwerveDrivetrain *m_chassis;
+    CANDriveSubsystem *m_chassis;
     FieldConstants *m_fieldConstants;
 };

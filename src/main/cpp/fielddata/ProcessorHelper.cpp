@@ -14,7 +14,6 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 
-#include "chassis/ChassisConfigMgr.h"
 #include "fielddata/ProcessorHelper.h"
 #include "utils/FMSData.h"
 
@@ -28,7 +27,7 @@ ProcessorHelper *ProcessorHelper::GetInstance()
     return ProcessorHelper::m_instance;
 }
 
-ProcessorHelper::ProcessorHelper() : m_chassis(ChassisConfigMgr::GetInstance()->GetSwerveChassis()),
+ProcessorHelper::ProcessorHelper() : m_chassis(CANDriveSubsystem::GetInstance()),
                                      m_fieldConstants(FieldConstants::GetInstance())
 {
 }

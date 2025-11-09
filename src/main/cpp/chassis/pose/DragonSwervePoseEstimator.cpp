@@ -22,7 +22,7 @@ DragonSwervePoseEstimator *DragonSwervePoseEstimator::m_instance = nullptr;
 
 DragonSwervePoseEstimator::DragonSwervePoseEstimator()
 {
-    m_chassis = ChassisConfigMgr::GetInstance()->GetSwerveChassis();
+    m_chassis = CANDriveSubsystem::GetInstance();
     m_visionPoseEstimators.clear();
 }
 

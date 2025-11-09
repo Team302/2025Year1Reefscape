@@ -20,7 +20,6 @@
 #include "frc/Timer.h"
 
 // Team 302 includes
-#include "chassis/ChassisConfigMgr.h"
 #include "vision/DragonVision.h"
 #include "vision/DragonLimelight.h"
 #include "utils/FMSData.h"
@@ -644,7 +643,7 @@ std::optional<frc::Pose3d> DragonVision::GetAprilTagPose(FieldConstants::AprilTa
 
 		if (visdata.has_value())
 		{
-			auto currentPose{frc::Pose3d(ChassisConfigMgr::GetInstance()->GetSwerveChassis()->GetPose())};
+			auto currentPose{frc::Pose3d(CANDriveSubsystem::GetInstance()->GetPose())};
 
 			auto trans3d = visdata.value().transformToTarget;
 			auto targetPose = currentPose + trans3d;

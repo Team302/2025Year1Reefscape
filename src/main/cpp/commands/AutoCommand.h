@@ -8,7 +8,7 @@
 #include <frc2/command/Command.h>
 #include <frc2/command/CommandHelper.h>
 
-#include "subsystems/CANDriveSubsystem.h"
+#include "chassis/CANDriveSubsystem.h"
 
 class AutoCommand : public frc2::CommandHelper<frc2::Command, AutoCommand> {
  public:

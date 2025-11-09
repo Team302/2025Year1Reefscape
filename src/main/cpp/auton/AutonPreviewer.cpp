@@ -89,7 +89,7 @@ std::vector<frc::Trajectory> AutonPreviewer::GetTrajectories()
 
     Rotation2d heading(units::angle::degree_t(0.0));
 
-    auto chassis = ChassisConfigMgr::GetInstance()->GetSwerveChassis();
+    auto chassis = CANDriveSubsystem::GetInstance();
 
     if (chassis != nullptr)
     {

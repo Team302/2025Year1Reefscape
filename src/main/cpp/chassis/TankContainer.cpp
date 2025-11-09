@@ -14,12 +14,9 @@
 // OR OTHER DEALINGS IN THE SOFTWARE.
 //====================================================================================================================================================
 #include "TankContainer.h"
-#include "commands/ChassisConfigMgr.h"
-#include "commands/TeleopFieldDrive.h"
-#include "commands/TeleopRobotDrive.h"
 #include "commands/DriveToTarget.h"
 #include "commands/VisionDrive.h"
-#include "RobotState.h"
+#include "state/RobotState.h"
 #include "commands/TrajectoryDrive.h"
 
 TankContainer *TankContainer::m_instance = nullptr;
@@ -33,7 +30,7 @@ TankContainer *TankContainer::GetInstance() {
 
 TankContainer::TankContainer() 
     : m_chassis(CANDriveSubsystem::GetInstance()),
-      m_maxSpeed(ChassisConfigMgr::GetInstance()->GetMaxSpeed()),
+      m_maxSpeed(CANDriveSubsystem::GetInstance()->GetMaxSpeed()),
       m_fieldDrive(std::make_unique<TeleopFieldDrive>(m_chassis, TeleopControl::GetInstance(), m_maxSpeed, m_maxAngularRate)),
       m_robotDrive(std::make_unique<TeleopRobotDrive>(m_chassis, TeleopControl::GetInstance(), m_maxSpeed, m_maxAngularRate)),
       m_driveToCoralStationSidewall(std::make_unique<DriveToTarget>(m_chassis, DragonTargetFinderTarget::CLOSEST_CORAL_STATION_SIDWALL_SIDE)),

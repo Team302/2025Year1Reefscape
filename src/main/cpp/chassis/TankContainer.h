@@ -6,8 +6,9 @@
 #include <units/angular_velocity.h>
 #include "commands/TrajectoryDrive.h"
 #include "CANDriveSubsystem.h"
+#include "state/IRobotStateChangeSubscriber.h"
 
-class TankContainer : CANDriveSubsystem
+class TankContainer : CANDriveSubsystem, IRobotStateChangeSubscriber
 {
 public:
     static TankContainer *GetInstance();

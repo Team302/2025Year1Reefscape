@@ -53,8 +53,8 @@ public:
 
 // Field-centric forward perspective
 enum class ForwardPerspectiveValue {
-    OperatorPerspective = 0,
-    BlueAlliance = 1,
+    RED_ALLIANCE = 0,
+    BLUE_ALLIANCE = 1,
 };
 
 // Control parameters
@@ -113,7 +113,7 @@ public:
 
     DriveRequestType DriveType = DriveRequestType::OpenLoopVoltage;
     bool DesaturateWheelSpeeds = true;
-    ForwardPerspectiveValue ForwardPerspective = ForwardPerspectiveValue::OperatorPerspective;
+    ForwardPerspectiveValue ForwardPerspective = ForwardPerspectiveValue::RED_ALLIANCE;
 
     void Apply(ControlParams const& parameters,
                std::vector<std::unique_ptr<TankDriveSide>> const& sidesToApply) override {
@@ -249,7 +249,7 @@ public:
     ChassisSpeeds Speeds{};
     DriveRequestType DriveType = DriveRequestType::OpenLoopVoltage;
     bool DesaturateWheelSpeeds = true;
-    ForwardPerspectiveValue ForwardPerspective = ForwardPerspectiveValue::BlueAlliance;
+    ForwardPerspectiveValue ForwardPerspective = ForwardPerspectiveValue::BLUE_ALLIANCE;
 
     void Apply(ControlParams const& parameters,
                std::vector<std::unique_ptr<TankDriveSide>> const& sidesToApply) override {
@@ -284,7 +284,7 @@ public:
 
     DriveRequestType DriveType = DriveRequestType::OpenLoopVoltage;
     bool DesaturateWheelSpeeds = true;
-    ForwardPerspectiveValue ForwardPerspective = ForwardPerspectiveValue::OperatorPerspective;
+    ForwardPerspectiveValue ForwardPerspective = ForwardPerspectiveValue::RED_ALLIANCE;
     PIDController HeadingController{0, 0, 0};
 
     void Apply(ControlParams const& parameters,
