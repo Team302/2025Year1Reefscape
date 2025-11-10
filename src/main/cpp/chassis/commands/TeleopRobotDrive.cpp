@@ -31,7 +31,6 @@ TeleopRobotDrive::TeleopRobotDrive(CANDriveSubsystem *chassis,
 void TeleopRobotDrive::Execute()
 {
     double forward = m_controller->GetAxisValue(TeleopControlFunctions::HOLONOMIC_DRIVE_FORWARD);
-    double strafe = m_controller->GetAxisValue(TeleopControlFunctions::HOLONOMIC_DRIVE_STRAFE);
     double rotate = m_controller->GetAxisValue(TeleopControlFunctions::HOLONOMIC_DRIVE_ROTATE);
 
     m_chassis->SetControl(
