@@ -140,7 +140,6 @@ void Robot::InitializeRobot()
     int32_t teamNumber = frc::RobotController::GetTeamNumber();
     FieldConstants::GetInstance();
     RoboRio::GetInstance();
-    auto chassisConfig = TankContainer::GetInstance();
     m_container = TankContainer::GetInstance();
 
     MechanismConfigMgr::GetInstance()->InitRobot((RobotIdentifier)teamNumber);

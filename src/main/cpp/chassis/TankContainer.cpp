@@ -18,6 +18,8 @@
 #include "commands/VisionDrive.h"
 #include "state/RobotState.h"
 #include "commands/TrajectoryDrive.h"
+#include "commands/TeleopFieldDrive.h"
+#include "commands/TeleopRobotDrive.h"
 
 TankContainer *TankContainer::m_instance = nullptr;
 
