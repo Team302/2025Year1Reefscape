@@ -23,16 +23,18 @@
 
 TankContainer *TankContainer::m_instance = nullptr;
 
-TankContainer *TankContainer::GetInstance() {
-    if (TankContainer::m_instance == nullptr) {
+TankContainer *TankContainer::GetInstance()
+{
+    if (TankContainer::m_instance == nullptr)
+    {
         TankContainer::m_instance = new TankContainer();
     }
     return TankContainer::m_instance;
 }
 
-TankContainer::TankContainer() 
+TankContainer::TankContainer()
     : m_chassis(CANDriveSubsystem::GetInstance()),
-      m_maxSpeed(CANDriveSubsystem::GetInstance()->GetMaxSpeed()),
+      m_maxSpeed(DriveConstants::MAX_DRIVE_SPEED),
       m_fieldDrive(std::make_unique<TeleopFieldDrive>(m_chassis, TeleopControl::GetInstance(), m_maxSpeed, m_maxAngularRate)),
       m_robotDrive(std::make_unique<TeleopRobotDrive>(m_chassis, TeleopControl::GetInstance(), m_maxSpeed, m_maxAngularRate)),
       m_driveToCoralStationSidewall(std::make_unique<DriveToTarget>(m_chassis, DragonTargetFinderTarget::CLOSEST_CORAL_STATION_SIDWALL_SIDE)),
@@ -44,12 +46,14 @@ TankContainer::TankContainer()
       m_driveToRightCage(std::make_unique<DriveToTarget>(m_chassis, DragonTargetFinderTarget::RIGHT_CAGE)),
       m_driveToCenterCage(std::make_unique<DriveToTarget>(m_chassis, DragonTargetFinderTarget::CENTER_CAGE)),
       m_driveToAlgae(std::make_unique<VisionDrive>(m_chassis, TeleopControl::GetInstance(), m_maxSpeed, m_maxAngularRate)),
-      m_trajectoryDrive(std::make_unique<TrajectoryDrive>(m_chassis)) {
+      m_trajectoryDrive(std::make_unique<TrajectoryDrive>(m_chassis))
+{
 
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::ClimbModeStatus_Int);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::DesiredCoralSide_Int);
 
-    if (m_chassis != nullptr) {
+    if (m_chassis != nullptr)
+    {
         ConfigureBindings();
     }
 }

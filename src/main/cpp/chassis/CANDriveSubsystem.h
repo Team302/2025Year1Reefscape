@@ -13,8 +13,9 @@
 #include <frc/geometry/Pose2d.h>
 #include "TankRequest.h" // Include the TankRequest header for request types
 
-class CANDriveSubsystem : public frc2::SubsystemBase {
- public:
+class CANDriveSubsystem : public frc2::SubsystemBase
+{
+public:
   static CANDriveSubsystem *GetInstance();
   void Periodic() override;
   void SimulationPeriodic() override;
@@ -23,17 +24,21 @@ class CANDriveSubsystem : public frc2::SubsystemBase {
   frc::Pose2d GetPose() { return frc::Pose2d(); } // TODO: fix this;
 
   // Overloaded SetControl functions for different request types
-  void SetControl(const drive::tank::requests::FieldCentric& request);
-  void SetControl(const drive::tank::requests::RobotCentric& request);
-  void SetControl(const drive::tank::requests::TankDriveBrake& request);
-  void SetControl(const drive::tank::requests::Idle& request);
+  void SetControl(const drive::tank::requests::FieldCentric &request);
+  void SetControl(const drive::tank::requests::RobotCentric &request);
+  void SetControl(const drive::tank::requests::TankDriveBrake &request);
+  void SetControl(const drive::tank::requests::Idle &request);
+  void SetControl(const drive::tank::requests::FieldCentricFacingAngle &request);
 
   void ResetPose(frc::Pose2d pose);
   void ResetSamePose();
+  void AddVisionMeasurement(const frc::Pose2d &visionPose, units::second_t timeStamp, const std::array<double, 3> &stdDevs);
+  void AddVisionMeasurement(const frc::Pose2d &visionPose, units::second_t timeStamp);
 
- private:
+protected:
   CANDriveSubsystem();
 
+private:
   rev::spark::SparkMax leftLeader;
   rev::spark::SparkMax leftFollower;
   rev::spark::SparkMax rightLeader;

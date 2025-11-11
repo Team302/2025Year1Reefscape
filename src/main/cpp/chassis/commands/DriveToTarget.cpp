@@ -58,10 +58,10 @@ void DriveToTarget::Initialize()
                 m_translationPIDX.SetGoal(m_endPose.X());
                 m_translationPIDY.SetGoal(m_endPose.Y());
 
-                auto speeds = m_chassis->GetState().Speeds;
+                // auto speeds = m_chassis->GetState().Speeds;
 
-                m_translationPIDX.Reset(m_currentPose.X(), speeds.vx);
-                m_translationPIDY.Reset(m_currentPose.Y(), speeds.vy);
+                // m_translationPIDX.Reset(m_currentPose.X(), speeds.vx);
+                // m_translationPIDY.Reset(m_currentPose.Y(), speeds.vy);
             }
         }
     }
