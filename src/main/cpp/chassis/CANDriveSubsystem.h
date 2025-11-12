@@ -8,6 +8,7 @@
 #include <frc/RobotController.h>
 #include <frc/drive/DifferentialDrive.h>
 #include <frc2/command/CommandPtr.h>
+#include <frc2/command/Commands.h>
 #include <frc2/command/SubsystemBase.h>
 #include <rev/SparkMax.h>
 #include <frc/geometry/Pose2d.h>
@@ -30,10 +31,34 @@ public:
   void SetControl(const drive::tank::requests::Idle &request);
   void SetControl(const drive::tank::requests::FieldCentricFacingAngle &request);
 
+  // ApplyRequest helpers (lvalue-producing supplier)
+  template <typename RequestSupplier>
+    requires std::is_lvalue_reference_v<std::invoke_result_t<RequestSupplier>> &&
+             requires(RequestSupplier rs, CANDriveSubsystem &drive) { drive.SetControl(rs()); }
+  frc2::CommandPtr ApplyRequest(RequestSupplier request)
+  {
+    return frc2::cmd::Run([this, request = std::move(request)]
+                          { SetControl(request()); }, {this});
+  }
+
+  // ApplyRequest helpers (rvalue / value-producing supplier)
+  template <typename RequestSupplier>
+    requires std::negation_v<std::is_lvalue_reference<std::invoke_result_t<RequestSupplier>>> &&
+             requires(RequestSupplier rs, CANDriveSubsystem &drive) { drive.SetControl(rs()); }
+  frc2::CommandPtr ApplyRequest(RequestSupplier request)
+  {
+    return frc2::cmd::Run([this, request = std::move(request)]
+                          { SetControl(request()); }, {this});
+  }
+
   void ResetPose(frc::Pose2d pose);
   void ResetSamePose();
   void AddVisionMeasurement(const frc::Pose2d &visionPose, units::second_t timeStamp, const std::array<double, 3> &stdDevs);
   void AddVisionMeasurement(const frc::Pose2d &visionPose, units::second_t timeStamp);
+
+  void SeedFieldCentric();
+
+  double GetRotationRateDegreesPerSecond();
 
 protected:
   CANDriveSubsystem();

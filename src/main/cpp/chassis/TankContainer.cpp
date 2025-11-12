@@ -20,6 +20,9 @@
 #include "commands/TrajectoryDrive.h"
 #include "commands/TeleopFieldDrive.h"
 #include "commands/TeleopRobotDrive.h"
+#include "frc2/command/Commands.h"
+#include "frc2/command/button/RobotModeTriggers.h"
+#include "frc2/command/ProxyCommand.h"
 
 TankContainer *TankContainer::m_instance = nullptr;
 
@@ -56,4 +59,86 @@ TankContainer::TankContainer()
     {
         ConfigureBindings();
     }
+}
+
+void TankContainer::ConfigureBindings()
+{
+    auto controller = TeleopControl::GetInstance();
+
+    CreateStandardDriveCommands(controller);
+    CreateReefscapeDriveToCommands(controller);
+}
+void TankContainer::CreateStandardDriveCommands(TeleopControl *controller)
+{
+    auto isResetYawSelected = controller->GetCommandTrigger(TeleopControlFunctions::RESET_POSITION);
+    auto isRobotOriented = controller->GetCommandTrigger(TeleopControlFunctions::ROBOT_ORIENTED_DRIVE);
+
+    if (m_chassis != nullptr)
+    {
+        m_chassis->SetDefaultCommand(std::move(m_fieldDrive));
+
+        frc2::RobotModeTriggers::Disabled().WhileTrue(m_chassis->ApplyRequest([]
+                                                                              { return drive::tank::requests::Idle{}; })
+                                                          .IgnoringDisable(true));
+
+        isResetYawSelected.OnTrue(m_chassis->RunOnce([this, controller]
+                                                     { m_chassis->SeedFieldCentric(); }));
+    }
+
+    isRobotOriented.WhileTrue(std::move(m_robotDrive));
+}
+
+void TankContainer::CreateReefscapeDriveToCommands(TeleopControl *controller)
+{
+    auto driveToRightReefBranch = controller->GetCommandTrigger(TeleopControlFunctions::AUTO_ALIGN_RIGHT);
+    auto driveToLeftReefBranch = controller->GetCommandTrigger(TeleopControlFunctions::AUTO_ALIGN_LEFT);
+    auto driveToCoralStation = controller->GetCommandTrigger(TeleopControlFunctions::AUTO_ALIGN_HUMAN_PLAYER_STATION);
+    auto driveToBarge = controller->GetCommandTrigger(TeleopControlFunctions::AUTO_ALIGN_BARGE);
+    auto driveToAglee = controller->GetCommandTrigger(TeleopControlFunctions::AUTO_ALIGN_ALGAE);
+
+    driveToBarge.WhileTrue(frc2::ProxyCommand(m_driveToBarge.get()).ToPtr());
+
+    driveToAglee.WhileTrue(frc2::cmd::DeferredProxy([this]() -> frc2::CommandPtr
+                                                    {
+    if (!m_climbMode) {
+        return frc2::ProxyCommand(m_driveToAlgae.get()).ToPtr();
+    } else {
+        return frc2::cmd::None(); // No command if in climb mode
+    } }));
+
+    driveToCoralStation.WhileTrue(frc2::cmd::DeferredProxy([this]() -> frc2::CommandPtr
+                                                           {
+    if (m_climbMode) {
+        return frc2::ProxyCommand(m_driveToCenterCage.get()).ToPtr();
+    }
+    else
+    {
+        if (m_desiredCoralSide == RobotStateChanges::DesiredCoralSide::AllianceWall)
+        {
+            return frc2::ProxyCommand(m_driveToCoralStationAlliance.get()).ToPtr();
+        }   
+        else
+        {
+            return frc2::ProxyCommand(m_driveToCoralStationSidewall.get()).ToPtr();
+        } } }));
+
+    driveToLeftReefBranch.WhileTrue(frc2::cmd::DeferredProxy([this]() -> frc2::CommandPtr
+                                                             {
+    if (m_climbMode) {
+        return frc2::ProxyCommand(m_driveToLeftCage.get()).ToPtr();
+    }
+    else
+    {
+        return frc2::ProxyCommand(m_driveToCoralLeftBranch.get()).ToPtr();
+    } }));
+
+    driveToRightReefBranch.WhileTrue(frc2::cmd::DeferredProxy([this]() -> frc2::CommandPtr
+                                                              {
+    if (m_climbMode) {
+        return frc2::ProxyCommand(m_driveToRightCage.get()).ToPtr();
+    }
+    else
+    {
+        return frc2::ProxyCommand(m_driveToCoralRightBranch.get()).ToPtr();
+    } }));
 }

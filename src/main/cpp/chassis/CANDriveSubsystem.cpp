@@ -7,10 +7,12 @@
 
 using namespace DriveConstants;
 // Singleton instance
-CANDriveSubsystem* CANDriveSubsystem::m_instance = nullptr;
+CANDriveSubsystem *CANDriveSubsystem::m_instance = nullptr;
 
-CANDriveSubsystem* CANDriveSubsystem::GetInstance() {
-  if (m_instance == nullptr) {
+CANDriveSubsystem *CANDriveSubsystem::GetInstance()
+{
+  if (m_instance == nullptr)
+  {
     m_instance = new CANDriveSubsystem();
   }
   return m_instance;
@@ -22,7 +24,8 @@ CANDriveSubsystem::CANDriveSubsystem()
       leftFollower{LEFT_FOLLOWER_ID, rev::spark::SparkMax::MotorType::kBrushed},
       rightLeader{RIGHT_LEADER_ID, rev::spark::SparkMax::MotorType::kBrushed},
       rightFollower{RIGHT_FOLLOWER_ID,
-                    rev::spark::SparkMax::MotorType::kBrushed} {
+                    rev::spark::SparkMax::MotorType::kBrushed}
+{
   // set can timeout, because this project only configures on startup and
   // doesn't query any parameters, timeouts can be very long. Projects which
   // update configuration or retrieve parameters during runtime should use much
@@ -71,18 +74,24 @@ void CANDriveSubsystem::Periodic() {}
 void CANDriveSubsystem::SimulationPeriodic() {}
 
 // sets the speed of the drive motors
-void CANDriveSubsystem::ArcadeDrive(double xSpeed, double zRotation) {
+void CANDriveSubsystem::ArcadeDrive(double xSpeed, double zRotation)
+{
   drive.ArcadeDrive(xSpeed, zRotation);
 }
 
-bool CANDriveSubsystem::IsSamePose() {
+bool CANDriveSubsystem::IsSamePose()
+{
   bool isCurrentlyStopped = GetPose().Translation().Distance(m_prevPose.Translation()) < m_distanceThreshold;
 
-  if (isCurrentlyStopped) {
-    if (!m_debounceTimer.IsRunning()) {
+  if (isCurrentlyStopped)
+  {
+    if (!m_debounceTimer.IsRunning())
+    {
       m_debounceTimer.Start();
     }
-  } else {
+  }
+  else
+  {
     m_debounceTimer.Stop();
     m_debounceTimer.Reset();
   }
@@ -91,27 +100,67 @@ bool CANDriveSubsystem::IsSamePose() {
 }
 
 // Overloaded SetControl for FieldCentric
-void CANDriveSubsystem::SetControl(const drive::tank::requests::FieldCentric& request) {
+void CANDriveSubsystem::SetControl(const drive::tank::requests::FieldCentric &request)
+{
   // Apply FieldCentric control logic
   leftLeader.Set(request.VelocityForward.to<double>());
   rightLeader.Set(request.VelocityForward.to<double>());
 }
 
 // Overloaded SetControl for RobotCentric
-void CANDriveSubsystem::SetControl(const drive::tank::requests::RobotCentric& request) {
+void CANDriveSubsystem::SetControl(const drive::tank::requests::RobotCentric &request)
+{
   // Apply RobotCentric control logic
   leftLeader.Set(request.VelocityForward.to<double>());
   rightLeader.Set(request.VelocityForward.to<double>());
 }
 
 // Overloaded SetControl for TankDriveBrake
-void CANDriveSubsystem::SetControl(const drive::tank::requests::TankDriveBrake& request) {
+void CANDriveSubsystem::SetControl(const drive::tank::requests::TankDriveBrake &request)
+{
   // Apply TankDriveBrake control logic (stop the motors)
   leftLeader.Set(0.0);
   rightLeader.Set(0.0);
 }
 
 // Overloaded SetControl for Idle
-void CANDriveSubsystem::SetControl(const drive::tank::requests::Idle& request) {
+void CANDriveSubsystem::SetControl(const drive::tank::requests::Idle &request)
+{
   // Apply Idle control logic (do nothing)
+}
+
+// Overloaded SetControl for FieldCentricFacingAngle
+void CANDriveSubsystem::SetControl(const drive::tank::requests::FieldCentricFacingAngle &request)
+{
+  // Placeholder: treat like FieldCentric using VelocityForward only (preserve current style)
+  leftLeader.Set(request.VelocityForward.to<double>());
+  rightLeader.Set(request.VelocityForward.to<double>());
+}
+
+void CANDriveSubsystem::ResetPose(frc::Pose2d pose)
+{
+  // Placeholder: reset pose logic
+  m_prevPose = pose;
+}
+void CANDriveSubsystem::ResetSamePose()
+{
+  m_debounceTimer.Stop();
+  m_debounceTimer.Reset();
+}
+void CANDriveSubsystem::AddVisionMeasurement(const frc::Pose2d &visionPose, units::second_t timeStamp, const std::array<double, 3> &stdDevs)
+{
+  // Placeholder: add vision measurement logic
+}
+void CANDriveSubsystem::AddVisionMeasurement(const frc::Pose2d &visionPose, units::second_t timeStamp)
+{
+  // Placeholder: add vision measurement logic
+}
+void CANDriveSubsystem::SeedFieldCentric()
+{
+  // Placeholder: seed field centric logic
+}
+double CANDriveSubsystem::GetRotationRateDegreesPerSecond()
+{
+  // Placeholder: return rotation rate logic
+  return 0.0;
 }

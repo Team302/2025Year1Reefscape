@@ -7,6 +7,7 @@
 #include "commands/TrajectoryDrive.h"
 #include "CANDriveSubsystem.h"
 #include "state/IRobotStateChangeSubscriber.h"
+#include "teleopcontrol/TeleopControl.h"
 
 class TankContainer : CANDriveSubsystem, IRobotStateChangeSubscriber
 {
@@ -22,6 +23,9 @@ public:
 private:
     TankContainer();
     virtual ~TankContainer() = default;
+    void ConfigureBindings();
+    void CreateStandardDriveCommands(TeleopControl *controller);
+    void CreateReefscapeDriveToCommands(TeleopControl *controller);
     static TankContainer *m_instance;
 
     CANDriveSubsystem *m_chassis;
@@ -42,4 +46,6 @@ private:
     frc2::CommandPtr m_driveToAlgae;
     std::unique_ptr<TrajectoryDrive> m_trajectoryDrive;
 
+    bool m_climbMode = false;
+    RobotStateChanges::DesiredCoralSide m_desiredCoralSide = RobotStateChanges::DesiredCoralSide::Sidewall;
 };
