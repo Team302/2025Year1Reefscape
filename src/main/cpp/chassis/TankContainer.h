@@ -9,7 +9,7 @@
 #include "state/IRobotStateChangeSubscriber.h"
 #include "teleopcontrol/TeleopControl.h"
 
-class TankContainer : CANDriveSubsystem, IRobotStateChangeSubscriber
+class TankContainer : IRobotStateChangeSubscriber
 {
 public:
     static TankContainer *GetInstance();
@@ -31,7 +31,7 @@ private:
     CANDriveSubsystem *m_chassis;
 
     units::meters_per_second_t m_maxSpeed;
-    static constexpr units::radians_per_second_t m_maxAngularRate{1.5_tps};
+    static constexpr units::radians_per_second_t m_maxAngularRate{8_tps};
 
     frc2::CommandPtr m_fieldDrive;
     frc2::CommandPtr m_robotDrive;

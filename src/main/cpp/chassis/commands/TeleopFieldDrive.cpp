@@ -17,6 +17,7 @@
 #include "chassis/CANDriveSubsystem.h"
 #include "state/RobotState.h"
 #include "utils/FMSData.h"
+#include "utils/logging/debug/Logger.h"
 
 // Note the simplified constructor and AddRequirements call
 TeleopFieldDrive::TeleopFieldDrive(CANDriveSubsystem *chassis,
@@ -68,6 +69,9 @@ void TeleopFieldDrive::Execute()
     }
     else // if nothing is selected then just drive with the current heading
     {
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("A"), string("rotate "), rotate);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("A"), string("forward"), forward);
+
         m_chassis->SetControl(
             m_fieldDriveRequest.WithVelocityX(forward * m_maxSpeed)
                 .WithRotationalRate(rotate * m_maxAngularRate));

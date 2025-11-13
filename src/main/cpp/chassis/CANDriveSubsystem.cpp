@@ -43,7 +43,7 @@ CANDriveSubsystem::CANDriveSubsystem()
   sparkConfig.VoltageCompensation(12.0);
   // enable current limit
   sparkConfig.SmartCurrentLimit(DRIVE_MOTOR_CURRENT_LIMIT);
-
+  sparkConfig.Inverted(true);
   // Set followers by setting the configuration to follow then configuring the
   // appropriate Spark MAX
   sparkConfig.Follow(leftLeader);
@@ -63,7 +63,7 @@ CANDriveSubsystem::CANDriveSubsystem()
   rightLeader.Configure(sparkConfig,
                         rev::spark::SparkBase::ResetMode::kResetSafeParameters,
                         rev::spark::SparkBase::PersistMode::kPersistParameters);
-  sparkConfig.Inverted(true);
+  sparkConfig.Inverted(false);
   leftLeader.Configure(sparkConfig,
                        rev::spark::SparkBase::ResetMode::kResetSafeParameters,
                        rev::spark::SparkBase::PersistMode::kPersistParameters);
@@ -126,7 +126,8 @@ void CANDriveSubsystem::SetControl(const drive::tank::requests::TankDriveBrake &
 // Overloaded SetControl for Idle
 void CANDriveSubsystem::SetControl(const drive::tank::requests::Idle &request)
 {
-  // Apply Idle control logic (do nothing)
+  leftLeader.Set(0.0);
+  rightLeader.Set(0.0);
 }
 
 // Overloaded SetControl for FieldCentricFacingAngle

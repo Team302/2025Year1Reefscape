@@ -17,10 +17,10 @@
 
 namespace DriveConstants
 {
-    inline constexpr int LEFT_LEADER_ID = 1;
-    inline constexpr int LEFT_FOLLOWER_ID = 2;
-    inline constexpr int RIGHT_LEADER_ID = 3;
-    inline constexpr int RIGHT_FOLLOWER_ID = 4;
+    inline constexpr int LEFT_LEADER_ID = 4;
+    inline constexpr int LEFT_FOLLOWER_ID = 5;
+    inline constexpr int RIGHT_LEADER_ID = 1;
+    inline constexpr int RIGHT_FOLLOWER_ID = 2;
 
     inline constexpr int DRIVE_MOTOR_CURRENT_LIMIT = 60;
     inline constexpr units::meters_per_second_t MAX_DRIVE_SPEED = 4_mps;
@@ -28,7 +28,7 @@ namespace DriveConstants
 
 namespace RollerConstants
 {
-    inline constexpr int ROLLER_MOTOR_ID = 5;
+    inline constexpr int ROLLER_MOTOR_ID = 6;
     inline constexpr int ROLLER_MOTOR_CURRENT_LIMIT = 60;
     inline constexpr double ROLLER_MOTOR_VOLTAGE_COMP = 10;
     inline constexpr double ROLLER_MOTOR_EJECT_SPEED = 0.44;

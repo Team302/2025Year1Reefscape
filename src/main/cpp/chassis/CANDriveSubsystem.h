@@ -60,10 +60,9 @@ public:
 
   double GetRotationRateDegreesPerSecond();
 
-protected:
+private:
   CANDriveSubsystem();
 
-private:
   rev::spark::SparkMax leftLeader;
   rev::spark::SparkMax leftFollower;
   rev::spark::SparkMax rightLeader;
