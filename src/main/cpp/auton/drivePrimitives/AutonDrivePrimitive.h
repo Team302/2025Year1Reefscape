@@ -20,7 +20,6 @@
 #include <frc2/command/CommandScheduler.h>
 #include "auton/ZoneParams.h"
 #include "chassis/CANDriveSubsystem.h"
-#include "mechanisms/DragonTale/DragonTale.h"
 #include "auton/PrimitiveEnums.h"
 
 class AutonDrivePrimitive : public IPrimitive
@@ -47,7 +46,7 @@ private:
     bool m_visionTransition;
     bool m_checkForDriveToUpdate;
     ZoneParams *m_zone;
-    DragonTale *m_dragonTaleMgr;
+    // DragonTale *m_dragonTaleMgr;
 
     frc::Timer m_debounceTimer;
     const units::time::second_t m_samePoseTime = 0.5_s;

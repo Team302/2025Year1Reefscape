@@ -127,9 +127,9 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                     auto heading = 0.0;
                     auto visionAlignment = PrimitiveParams::VISION_ALIGNMENT::UNKNOWN;
 
-                    auto taleState = DragonTale::STATE_READY;
-                    bool changeTaleState = false;
-                    auto config = MechanismConfigMgr::GetInstance()->GetCurrentConfig();
+                    // auto taleState = DragonTale::STATE_READY;
+                    // bool changeTaleState = false;
+                    // auto config = MechanismConfigMgr::GetInstance()->GetCurrentConfig();
 
                     std::string pathName;
                     std::string choreoTrajectoryName;
@@ -198,15 +198,15 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                         }
                         else if (strcmp(attr.name(), "taleOption") == 0)
                         {
-                            if (config != nullptr && config->GetMechanism(MechanismTypes::DRAGON_TALE) != nullptr)
-                            {
-                                auto taleStateItr = DragonTale::stringToSTATE_NAMESEnumMap.find(attr.value());
-                                if (taleStateItr != DragonTale::stringToSTATE_NAMESEnumMap.end())
-                                {
-                                    taleState = taleStateItr->second;
-                                    changeTaleState = true;
-                                }
-                            }
+                            // if (config != nullptr && config->GetMechanism(MechanismTypes::DRAGON_TALE) != nullptr)
+                            // {
+                            //     auto taleStateItr = DragonTale::stringToSTATE_NAMESEnumMap.find(attr.value());
+                            //     if (taleStateItr != DragonTale::stringToSTATE_NAMESEnumMap.end())
+                            //     {
+                            //         taleState = taleStateItr->second;
+                            //         changeTaleState = true;
+                            //     }
+                            // }
                         }
 
                         else if (strcmp(attr.name(), "visionAlignment") == 0)
@@ -256,8 +256,8 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                                                                      zones, // vector of all zones included as part of the path
                                                                             // can have multiple zones as part of a complex path
                                                                      visionAlignment,
-                                                                     changeTaleState,
-                                                                     taleState,
+                                                                     //  changeTaleState,
+                                                                     //  taleState,
                                                                      pathUpdateOption));
                     }
                     else
@@ -291,7 +291,6 @@ void PrimitiveParser::Print(PrimitiveParamsVector paramVector)
         logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("Heading"), param->GetHeading());
         logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("Choreo Trajectory Name"), param->GetTrajectoryName());
         logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("vision alignment"), param->GetVisionAlignment());
-        logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("Dragon Tale State"), param->GetTaleState());
         logger->LogData(LOGGER_LEVEL::PRINT, ntName, string("num zones"), (double)param->GetZones().size());
 
         slot++;

@@ -25,21 +25,6 @@ using std::string;
 
 void MechanismConfigCOMP_BOT_302::DefineMechanisms()
 {
-	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Initializing mechanism"), string("ClimberManager"), "");
-	m_theClimberManager = new ClimberManager(RobotIdentifier::COMP_BOT_302);
-	m_theClimberManager->CreateCOMP_BOT302();
-	m_theClimberManager->CreateAndRegisterStates();
-	m_theClimberManager->InitializeCOMP_BOT302();
-	m_theClimberManager->Init(/*m_theClimberManager*/);
-	m_mechanismMap[MechanismTypes::MECHANISM_TYPE::CLIMBER_MANAGER] = m_theClimberManager;
-
-	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Initializing mechanism"), string("DragonTale"), "");
-	m_theDragonTale = new DragonTale(RobotIdentifier::COMP_BOT_302);
-	m_theDragonTale->CreateCOMP_BOT302();
-	m_theDragonTale->CreateAndRegisterStates();
-	m_theDragonTale->InitializeCOMP_BOT302();
-	m_theDragonTale->Init(/*m_theDragonTale*/);
-	m_mechanismMap[MechanismTypes::MECHANISM_TYPE::DRAGON_TALE] = m_theDragonTale;
 }
 
 StateMgr *MechanismConfigCOMP_BOT_302::GetMechanism(MechanismTypes::MECHANISM_TYPE mechType)

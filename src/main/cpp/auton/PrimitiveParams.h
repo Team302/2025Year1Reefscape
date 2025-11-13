@@ -29,8 +29,6 @@
 #include "vision/DragonVision.h"
 #include "auton/ZoneParams.h"
 
-#include "mechanisms/DragonTale/DragonTale.h"
-
 // Third Party Includes
 
 class PrimitiveParams
@@ -52,8 +50,8 @@ public:
                     std::string choreoTrajectoryName,
                     ZoneParamsVector zones, // create zones parameter of type
                     VISION_ALIGNMENT visionAlignment,
-                    bool changeTaleState,
-                    DragonTale::STATE_NAMES taleState,
+                    // bool changeTaleState,
+                    // DragonTale::STATE_NAMES taleState,
                     ChassisOptionEnums::DriveStateType pathUpdateOption); // create zones parameter of type ZonesParamsVector
 
     PrimitiveParams() = delete;
@@ -70,8 +68,8 @@ public:
     ZoneParamsVector GetZones() const { return m_zones; }; // create a GetZones() method to return the instance of zones m_zones
     VISION_ALIGNMENT GetVisionAlignment() const { return m_visionAlignment; }
 
-    bool IsTaleStateChanging() const { return m_changeTaleState; }
-    DragonTale::STATE_NAMES GetTaleState() const { return m_taleState; }
+    // bool IsTaleStateChanging() const { return m_changeTaleState; }
+    // DragonTale::STATE_NAMES GetTaleState() const { return m_taleState; }
 
     void SetVisionAlignment(VISION_ALIGNMENT visionAlignment) { m_visionAlignment = visionAlignment; }
 
@@ -85,9 +83,9 @@ private:
     std::string m_choreoTrajectoryName;
     VISION_ALIGNMENT m_visionAlignment;
 
-    bool m_changeTaleState;
+    // bool m_changeTaleState;
 
-    DragonTale::STATE_NAMES m_taleState;
+    // DragonTale::STATE_NAMES m_taleState;
 
     ZoneParamsVector m_zones;
 
