@@ -100,7 +100,7 @@ ZoneParams *ZoneParser::ParseXML(string fulldirfile)
             ChassisOptionEnums::DriveStateType chosenUpdateOption = ChassisOptionEnums::STOP_DRIVE;
             ChassisOptionEnums::AutonAvoidOptions avoidChosenOption = ChassisOptionEnums::AutonAvoidOptions::NO_AVOID_OPTION;
 
-            auto config = MechanismConfigMgr::GetInstance()->GetCurrentConfig();
+            // auto config = MechanismConfigMgr::GetInstance()->GetCurrentConfig();
 
             // looping through the zone xml attributes to define the location of a given zone (based on 2 sets grid coordinates)
             for (xml_attribute attr = zonenode.first_attribute(); attr; attr = attr.next_attribute())
