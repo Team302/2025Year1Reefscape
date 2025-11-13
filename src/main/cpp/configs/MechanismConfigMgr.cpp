@@ -21,6 +21,7 @@
 #include "configs/MechanismConfigCOMP_BOT_302.h"
 #include "configs/MechanismConfigMgr.h"
 #include "configs/MechanismConfigPRACTICE_BOT_9999.h"
+#include "configs/MechanismConfigYEAR_1_BOT_2025.h"
 #include "utils/logging/debug/Logger.h"
 
 using namespace std;
@@ -51,9 +52,13 @@ void MechanismConfigMgr::InitRobot(RobotIdentifier id)
 		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Initializing robot "), string("COMP_BOT_302"), string(""));
 		m_config = new MechanismConfigCOMP_BOT_302();
 		break;
+	case RobotIdentifier::YEAR1_BOT_2025:
+		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Initializing robot "), string("YEAR_1_BOT_2025"), string(""));
+		m_config = new MechanismConfigYEAR_1_BOT_2025();
+		break;
 	case RobotIdentifier::SIM_BOT_0:
 		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Initializing robot "), string("SIM_BOT_0"), string(""));
-		m_config = new MechanismConfigCOMP_BOT_302();
+		m_config = new MechanismConfigYEAR_1_BOT_2025();
 		break;
 
 	default:
