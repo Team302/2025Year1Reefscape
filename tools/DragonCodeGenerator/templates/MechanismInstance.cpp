@@ -31,15 +31,15 @@ $$_MECHANISM_INSTANCE_NAME_$$::$$_MECHANISM_INSTANCE_NAME_$$(RobotIdentifier act
                                                                                               m_stateMap()
 {
     PeriodicLooper::GetInstance()->RegisterAll(this);
-    InitializeLogging();
+    // InitializeLogging();
 }
 
-void $$_MECHANISM_INSTANCE_NAME_$$::InitializeLogging()
-{
+/* void $$_MECHANISM_INSTANCE_NAME_$$::InitializeLogging()
+ {
     wpi::log::DataLog &log = frc::DataLogManager::GetLog();
 
-    $$_DATA_LOGGING_INITIALIZATION_$$
-}
+     $$_DATA_LOGGING_INITIALIZATION_$$
+ }*/
 
 std::map<std::string, $$_MECHANISM_INSTANCE_NAME_$$::STATE_NAMES>
     $$_MECHANISM_INSTANCE_NAME_$$::stringToSTATE_NAMESEnumMap{
@@ -176,7 +176,7 @@ _NT_TUNING_FUNCTIONS_END_
     return nullptr;
 }
 
-void $$_MECHANISM_INSTANCE_NAME_$$::DataLog(uint64_t timestamp)
+/* void $$_MECHANISM_INSTANCE_NAME_$$::DataLog(uint64_t timestamp)
 {
-    $$_DATALOG_METHOD_$$
-}
+   $$_DATALOG_METHOD_$$
+ }*/
