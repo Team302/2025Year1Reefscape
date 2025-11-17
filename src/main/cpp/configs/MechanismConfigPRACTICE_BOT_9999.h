@@ -19,8 +19,7 @@
 #include <unordered_map>
 
 #include "configs/MechanismConfig.h"
-#include "mechanisms/ClimberManager/ClimberManager.h"
-#include "mechanisms/DragonTale/DragonTale.h"
+
 #include "mechanisms/MechanismTypes.h"
 #include "state/StateMgr.h"
 
@@ -37,8 +36,5 @@ protected:
 	void DefineLEDs() override;
 
 private:
-	ClimberManager *m_theClimberManager = nullptr;
-	DragonTale *m_theDragonTale = nullptr;
-
 	std::unordered_map<MechanismTypes::MECHANISM_TYPE, StateMgr *> m_mechanismMap;
 };

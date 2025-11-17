@@ -24,7 +24,6 @@
 // Team 302 includes
 #include "auton/AutonGrid.h"
 #include "chassis/ChassisOptionEnums.h"
-#include "mechanisms/DragonTale/DragonTale.h"
 #include "auton/PrimitiveEnums.h"
 
 // Third Party Includes
@@ -45,8 +44,8 @@ public:
                units::length::meter_t m_xgrid2rect,
                units::length::meter_t m_ygrid1rect,
                units::length::meter_t m_ygrid2rect,
-               bool isTaleStateChanging,
-               DragonTale::STATE_NAMES taleOption,
+               //    bool isTaleStateChanging,
+               //    DragonTale::STATE_NAMES taleOption,
                ChassisOptionEnums::AutonChassisOptions autonchassisoption,
                ChassisOptionEnums::HeadingOption headingOption,
                ChassisOptionEnums::DriveStateType pathUpdateOption,
@@ -70,7 +69,7 @@ public:
 
     bool IsTaleStateChanging() const { return m_isTaleStateChanging; }
 
-    DragonTale::STATE_NAMES GetTaleOption() const { return m_taleOption; }
+    // DragonTale::STATE_NAMES GetTaleOption() const { return m_taleOption; }
 
     ChassisOptionEnums::HeadingOption GetHeadingOption() const { return m_headingOption; }
     ChassisOptionEnums::AutonChassisOptions GetChassisOption() const { return m_chassisoption; }
@@ -85,7 +84,7 @@ private:
     units::length::meter_t m_ygrid2rect;
     bool m_isTaleStateChanging;
 
-    DragonTale::STATE_NAMES m_taleOption;
+    // DragonTale::STATE_NAMES m_taleOption;
 
     ChassisOptionEnums::AutonChassisOptions m_chassisoption;
     ChassisOptionEnums::HeadingOption m_headingOption;

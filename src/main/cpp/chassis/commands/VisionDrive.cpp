@@ -16,7 +16,6 @@
 #include "chassis/commands/VisionDrive.h"
 #include "chassis/TankRequest.h"
 
-
 // Note the simplified constructor and AddRequirements call
 VisionDrive::VisionDrive(CANDriveSubsystem *chassis,
                          TeleopControl *controller,
@@ -58,7 +57,7 @@ void VisionDrive::Execute()
     else
     {
         double forward = m_controller->GetAxisValue(TeleopControlFunctions::HOLONOMIC_DRIVE_FORWARD);
-        double strafe = m_controller->GetAxisValue(TeleopControlFunctions::HOLONOMIC_DRIVE_STRAFE);
+        // double strafe = m_controller->GetAxisValue(TeleopControlFunctions::HOLONOMIC_DRIVE_STRAFE);
         double rotate = m_controller->GetAxisValue(TeleopControlFunctions::HOLONOMIC_DRIVE_ROTATE);
 
         m_chassis->SetControl(
