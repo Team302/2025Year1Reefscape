@@ -17,45 +17,35 @@
 
 #include <string>
 
-#include "configs/MechanismConfig.h"
-#include "configs/MechanismConfigMgr.h"
-#include "utils/logging/debug/Logger.h"
-
 #include "configs/MechanismConfigKitBot_2025.h"
+#include "configs/MechanismConfigMgr.h"
+#include "configs/RobotElementNames.h"
+#include "utils/logging/debug/Logger.h"
+#include "utils/PeriodicLooper.h"
 
-using namespace std;
+using std::string;
 
-MechanismConfigMgr *MechanismConfigMgr::m_instance = nullptr;
-MechanismConfigMgr *MechanismConfigMgr::GetInstance()
+void MechanismConfigKitBot_2025::DefineMechanisms()
 {
-	if (MechanismConfigMgr::m_instance == nullptr)
-	{
-		MechanismConfigMgr::m_instance = new MechanismConfigMgr();
-	}
-	return MechanismConfigMgr::m_instance;
+	Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Initializing mechanism"), string("Delivery"), "");
+	m_theDelivery = new Delivery(RobotIdentifier::KIT_BOT_2025);
+	m_theDelivery->CreateKitBot2025();
+	m_theDelivery->CreateAndRegisterStates();
+	m_theDelivery->InitializeKitBot2025();
+	m_theDelivery->Init(/*m_theDelivery*/);
+	m_mechanismMap[MechanismTypes::MECHANISM_TYPE::DELIVERY] = m_theDelivery;
 }
 
-MechanismConfigMgr::MechanismConfigMgr() : m_config(nullptr)
+StateMgr *MechanismConfigKitBot_2025::GetMechanism(MechanismTypes::MECHANISM_TYPE mechType)
 {
+	auto itr = m_mechanismMap.find(mechType);
+	if (itr != m_mechanismMap.end())
+	{
+		return itr->second;
+	}
+	return nullptr;
 }
 
-void MechanismConfigMgr::InitRobot(RobotIdentifier id)
+void MechanismConfigKitBot_2025::DefineLEDs()
 {
-	switch (id)
-	{
-	case RobotIdentifier::KIT_BOT_2025:
-		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Initializing robot "), string("KIT_BOT_2025"), string(""));
-		m_config = new MechanismConfigKitBot_2025();
-		break;
-
-	default:
-		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Skipping robot initialization because of unknown robot id "), string(""), static_cast<int>(id));
-		break;
-	}
-
-	if (m_config != nullptr)
-	{
-		m_config->BuildRobot();
-		Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("Initialization completed for robot "), string(""), static_cast<int>(id));
-	}
 }

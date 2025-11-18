@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topLevelAppDataElement xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <robotFiles>
+    <string>KitBot2025.xml</string>
+  </robotFiles>
+  <Robots />
+  <Mechanisms>
+    <mechanism>
+      <GUID>97ca7cdc-b8af-4493-9122-c0ead9c1b0c8</GUID>
+      <name>Delivery</name>
+      <MotorControllers />
+      <closedLoopControlParameters />
+      <solenoid />
+      <servo />
+      <analogInput />
+      <digitalInput />
+      <cancoder />
+      <stateMotorControlData />
+      <states />
+      <doubleParameters />
+      <boolParameters />
+      <constDoubleParameters />
+      <constBoolParameters />
+    </mechanism>
+  </Mechanisms>
+</topLevelAppDataElement>

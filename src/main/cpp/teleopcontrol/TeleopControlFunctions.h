@@ -62,6 +62,7 @@ public:
         L3_SCORING_POSITION,
         L4_SCORING_POSITION,
         SCORE,
+        REVERSE,
         SCORING_MODE,
         HUMAN_PLAYER_STATION,
         ALGAE_INTAKE,
