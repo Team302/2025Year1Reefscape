@@ -21,9 +21,10 @@
 #include "auton/ZoneParams.h"
 #include "auton/ZoneParser.h"
 #include "frc/Filesystem.h"
-#include "mechanisms/DragonTale/DragonTale.h"
 #include "pugixml/pugixml.hpp"
 #include "utils/logging/debug/Logger.h"
+#include "configs/MechanismConfigMgr.h"
+#include "RobinHood/robin_hood.h"
 
 using namespace std;
 using namespace pugi;
@@ -92,14 +93,14 @@ ZoneParams *ZoneParser::ParseXML(string fulldirfile)
             // TODO: add zoneType parsing and check
 
             ChassisOptionEnums::AutonChassisOptions chassisChosenOption = ChassisOptionEnums::AutonChassisOptions::NO_VISION;
-            bool isTaleStateChanging = false;
-            DragonTale::STATE_NAMES taleChosenOption = DragonTale::STATE_NAMES::STATE_READY;
+            // bool isTaleStateChanging = false;
+            // DragonTale::STATE_NAMES taleChosenOption = DragonTale::STATE_NAMES::STATE_READY;
             ChassisOptionEnums::HeadingOption chosenHeadingOption = ChassisOptionEnums::HeadingOption::IGNORE;
 
             ChassisOptionEnums::DriveStateType chosenUpdateOption = ChassisOptionEnums::STOP_DRIVE;
             ChassisOptionEnums::AutonAvoidOptions avoidChosenOption = ChassisOptionEnums::AutonAvoidOptions::NO_AVOID_OPTION;
 
-            auto config = MechanismConfigMgr::GetInstance()->GetCurrentConfig();
+            // auto config = MechanismConfigMgr::GetInstance()->GetCurrentConfig();
 
             // looping through the zone xml attributes to define the location of a given zone (based on 2 sets grid coordinates)
             for (xml_attribute attr = zonenode.first_attribute(); attr; attr = attr.next_attribute())
@@ -145,19 +146,19 @@ ZoneParams *ZoneParser::ParseXML(string fulldirfile)
                 }
                 else if (strcmp(attr.name(), "taleOption") == 0)
                 {
-                    auto itr = DragonTale::stringToSTATE_NAMESEnumMap.find(attr.value());
-                    if (config != nullptr && config->GetMechanism(MechanismTypes::DRAGON_TALE) != nullptr)
-                    {
-                        if (itr != DragonTale::stringToSTATE_NAMESEnumMap.end())
-                        {
-                            taleChosenOption = itr->second;
-                            isTaleStateChanging = true;
-                        }
-                        else
-                        {
-                            hasError = true;
-                        }
-                    }
+                    // auto itr = DragonTale::stringToSTATE_NAMESEnumMap.find(attr.value());
+                    // if (config != nullptr && config->GetMechanism(MechanismTypes::DRAGON_TALE) != nullptr)
+                    // {
+                    //     if (itr != DragonTale::stringToSTATE_NAMESEnumMap.end())
+                    //     {
+                    //         taleChosenOption = itr->second;
+                    //         isTaleStateChanging = true;
+                    //     }
+                    //     else
+                    //     {
+                    //         hasError = true;
+                    //     }
+                    // }
                 }
 
                 else if (strcmp(attr.name(), "chassisOption") == 0)
@@ -222,8 +223,8 @@ ZoneParams *ZoneParser::ParseXML(string fulldirfile)
                                        xgrid2rect,
                                        ygrid1rect,
                                        ygrid2rect,
-                                       isTaleStateChanging,
-                                       taleChosenOption,
+                                       //    isTaleStateChanging,
+                                       //    taleChosenOption,
                                        chassisChosenOption,
                                        chosenHeadingOption,
                                        chosenUpdateOption,

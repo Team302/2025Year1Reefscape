@@ -35,7 +35,6 @@
 
 #include "chassis/ChassisOptionEnums.h"
 
-#include "mechanisms/DragonTale/DragonTale.h"
 // #include "mechanisms/MechanismTypes.h"
 
 // Third Party Includes
@@ -194,8 +193,6 @@ void CyclePrimitives::RunDriveStop()
 										  string(), // ChoreoTrajectoryName
 										  ZoneParamsVector(),
 										  PrimitiveParams::VISION_ALIGNMENT::UNKNOWN,
-										  false,
-										  DragonTale::STATE_NAMES::STATE_READY,
 										  ChassisOptionEnums::DriveStateType::STOP_DRIVE);
 		m_driveStop = m_primFactory->GetIPrimitive(params);
 		m_driveStop->Init(params);
@@ -206,29 +203,29 @@ void CyclePrimitives::RunDriveStop()
 void CyclePrimitives::SetMechanismStatesFromParam(PrimitiveParams *params)
 {
 
-	auto config = MechanismConfigMgr::GetInstance()->GetCurrentConfig();
-	if (params != nullptr && config != nullptr)
-	{
-		auto taleStateMgr = config->GetMechanism(MechanismTypes::MECHANISM_TYPE::DRAGON_TALE);
-		auto taleMgr = taleStateMgr != nullptr ? dynamic_cast<DragonTale *>(taleStateMgr) : nullptr;
+	// auto config = MechanismConfigMgr::GetInstance()->GetCurrentConfig();
+	// if (params != nullptr && config != nullptr)
+	// {
+	// 	// auto taleStateMgr = config->GetMechanism(MechanismTypes::MECHANISM_TYPE::DRAGON_TALE);
+	// 	// auto taleMgr = taleStateMgr != nullptr ? dynamic_cast<DragonTale *>(taleStateMgr) : nullptr;
 
-		if (taleMgr != nullptr && params->IsTaleStateChanging())
-		{
-			taleMgr->SetCurrentState(params->GetTaleState(), true);
-		}
-	}
+	// 	// if (taleMgr != nullptr && params->IsTaleStateChanging())
+	// 	// {
+	// 	// 	taleMgr->SetCurrentState(params->GetTaleState(), true);
+	// 	// }
+	// }
 }
 void CyclePrimitives::SetMechanismStatesFromZone(ZoneParams *params)
 {
-	auto config = MechanismConfigMgr::GetInstance()->GetCurrentConfig();
-	if (params != nullptr && config != nullptr)
-	{
-		auto taleStateMgr = config->GetMechanism(MechanismTypes::MECHANISM_TYPE::DRAGON_TALE);
-		auto taleMgr = taleStateMgr != nullptr ? dynamic_cast<DragonTale *>(taleStateMgr) : nullptr;
+	// auto config = MechanismConfigMgr::GetInstance()->GetCurrentConfig();
+	// if (params != nullptr && config != nullptr)
+	// {
+	// 	// auto taleStateMgr = config->GetMechanism(MechanismTypes::MECHANISM_TYPE::DRAGON_TALE);
+	// 	// auto taleMgr = taleStateMgr != nullptr ? dynamic_cast<DragonTale *>(taleStateMgr) : nullptr;
 
-		if (taleMgr != nullptr && params->IsTaleStateChanging())
-		{
-			taleMgr->SetCurrentState(params->GetTaleOption(), true);
-		}
-	}
+	// 	// if (taleMgr != nullptr && params->IsTaleStateChanging())
+	// 	// {
+	// 	// 	taleMgr->SetCurrentState(params->GetTaleOption(), true);
+	// 	// }
+	// }
 }

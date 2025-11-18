@@ -30,16 +30,16 @@ AutonDrivePrimitive::AutonDrivePrimitive() : m_chassis(CANDriveSubsystem::GetIns
                                              m_maxTime(0_s),
                                              m_visionTransition(false),
                                              m_checkForDriveToUpdate(false),
-                                             m_zone(nullptr),
-                                             m_dragonTaleMgr(nullptr)
+                                             m_zone(nullptr)
+//  m_dragonTaleMgr(nullptr)
 {
     // Get mechanism handles once in the constructor
-    auto config = MechanismConfigMgr::GetInstance()->GetCurrentConfig();
-    if (config != nullptr)
-    {
-        auto taleStateMgr = config->GetMechanism(MechanismTypes::MECHANISM_TYPE::DRAGON_TALE);
-        m_dragonTaleMgr = taleStateMgr != nullptr ? dynamic_cast<DragonTale *>(taleStateMgr) : nullptr;
-    }
+    // auto config = MechanismConfigMgr::GetInstance()->GetCurrentConfig();
+    // if (config != nullptr)
+    // {
+    //     // auto taleStateMgr = config->GetMechanism(MechanismTypes::MECHANISM_TYPE::DRAGON_TALE);
+    //     // m_dragonTaleMgr = taleStateMgr != nullptr ? dynamic_cast<DragonTale *>(taleStateMgr) : nullptr;
+    // }
 }
 
 void AutonDrivePrimitive::Init(PrimitiveParams *params)
@@ -76,7 +76,7 @@ void AutonDrivePrimitive::Init(PrimitiveParams *params)
     case PRIMITIVE_IDENTIFIER::DO_NOTHING_MECHANISMS:
     {
         m_managedCommand = frc2::cmd::RunOnce([this]()
-                                              { m_chassis->SetControl(drive::tank::requests::TankDriveBrake{});}, {m_chassis});
+                                              { m_chassis->SetControl(drive::tank::requests::TankDriveBrake{}); }, {m_chassis});
         break;
     }
 
@@ -116,12 +116,12 @@ bool AutonDrivePrimitive::IsDone()
         return timeout || !m_managedCommand.IsScheduled();
 
     case PRIMITIVE_IDENTIFIER::DO_NOTHING_MECHANISMS:
-        if (m_dragonTaleMgr != nullptr)
-        {
-            bool mechReady = m_dragonTaleMgr->GetCurrentState() == DragonTale::STATE_NAMES::STATE_READY ||
-                             m_dragonTaleMgr->GetCurrentState() == DragonTale::STATE_NAMES::STATE_HOLD;
-            return timeout || mechReady;
-        }
+        // if (m_dragonTaleMgr != nullptr)
+        // {
+        //     bool mechReady = m_dragonTaleMgr->GetCurrentState() == DragonTale::STATE_NAMES::STATE_READY ||
+        //                      m_dragonTaleMgr->GetCurrentState() == DragonTale::STATE_NAMES::STATE_HOLD;
+        //     return timeout || mechReady;
+        // }
 
     case PRIMITIVE_IDENTIFIER::HOLD_POSITION:
     case PRIMITIVE_IDENTIFIER::DO_NOTHING:
