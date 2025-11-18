@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <frc2/command/Command.h>
 #include <frc2/command/CommandPtr.h>
 #include <units/velocity.h>
@@ -29,9 +30,8 @@ private:
     static TankContainer *m_instance;
 
     CANDriveSubsystem *m_chassis;
-
     units::meters_per_second_t m_maxSpeed;
-    static constexpr units::radians_per_second_t m_maxAngularRate{8_tps};
+    units::degrees_per_second_t m_maxAngularRate;
 
     frc2::CommandPtr m_fieldDrive;
     frc2::CommandPtr m_robotDrive;

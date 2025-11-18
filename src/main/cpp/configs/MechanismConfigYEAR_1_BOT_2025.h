@@ -21,8 +21,6 @@
 #include "configs/MechanismConfig.h"
 #include "mechanisms/MechanismTypes.h"
 #include "state/StateMgr.h"
-#include "mechanisms/ClimberManager/ClimberManager.h"
-#include "mechanisms/DragonTale/DragonTale.h"
 
 class MechanismConfigYEAR_1_BOT_2025 : public MechanismConfig
 {
@@ -37,8 +35,5 @@ protected:
 	void DefineLEDs() override;
 
 private:
-	// ClimberManager *m_theClimberManager = nullptr;
-	// DragonTale *m_theDragonTale = nullptr;
-
 	std::unordered_map<MechanismTypes::MECHANISM_TYPE, StateMgr *> m_mechanismMap;
 };

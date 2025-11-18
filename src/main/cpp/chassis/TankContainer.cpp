@@ -38,6 +38,7 @@ TankContainer *TankContainer::GetInstance()
 TankContainer::TankContainer()
     : m_chassis(CANDriveSubsystem::GetInstance()),
       m_maxSpeed(DriveConstants::MAX_DRIVE_SPEED),
+      m_maxAngularRate(DriveConstants::MAX_ROTATE_SPEED),
       m_fieldDrive(std::make_unique<TeleopFieldDrive>(m_chassis, TeleopControl::GetInstance(), m_maxSpeed, m_maxAngularRate)),
       m_robotDrive(std::make_unique<TeleopRobotDrive>(m_chassis, TeleopControl::GetInstance(), m_maxSpeed, m_maxAngularRate)),
       m_driveToCoralStationSidewall(std::make_unique<DriveToTarget>(m_chassis, DragonTargetFinderTarget::CLOSEST_CORAL_STATION_SIDWALL_SIDE)),

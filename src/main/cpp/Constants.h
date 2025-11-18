@@ -4,6 +4,7 @@
 
 #pragma once
 #include <units/velocity.h>
+#include <units/angular_velocity.h>
 
 /**
  * The Constants header provides a convenient place for teams to hold robot-wide
@@ -24,6 +25,7 @@ namespace DriveConstants
 
     inline constexpr int DRIVE_MOTOR_CURRENT_LIMIT = 60;
     inline constexpr units::meters_per_second_t MAX_DRIVE_SPEED = 4_mps;
+    inline constexpr units::degrees_per_second_t MAX_ROTATE_SPEED = 90_deg_per_s;
 } // namespace DriveConstants
 
 namespace OperatorConstants

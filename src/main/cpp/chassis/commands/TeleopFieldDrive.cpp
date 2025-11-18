@@ -69,8 +69,10 @@ void TeleopFieldDrive::Execute()
     }
     else // if nothing is selected then just drive with the current heading
     {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("A"), string("rotate "), rotate);
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("A"), string("forward"), forward);
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("A"), string("rotate "), rotate * m_maxAngularRate.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("A"), string("forward"), forward * m_maxSpeed.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("A"), string("maxangularrate"), m_maxAngularRate.to<double>());
+        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("A"), string("maxspeed"), m_maxSpeed.to<double>());
 
         m_chassis->SetControl(
             m_fieldDriveRequest.WithVelocityX(forward * m_maxSpeed)
