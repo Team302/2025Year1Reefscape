@@ -178,6 +178,7 @@ robin_hood::unordered_map<TeleopControlFunctions::FUNCTION, const TeleopControlB
     {TeleopControlFunctions::L4_SCORING_POSITION, copilotYButton},
     {TeleopControlFunctions::ALGAE_INTAKE, copilotLTriggerPressed},
     {TeleopControlFunctions::SCORE, copilotRBumper},
+    {TeleopControlFunctions::REVERSE, copilotLBumper},
     {TeleopControlFunctions::SCORING_MODE, copilotSelectButton},
     {TeleopControlFunctions::HUMAN_PLAYER_STATION, copilotBButton},
     {TeleopControlFunctions::MANUAL_ON, copilotLStickPressed},
