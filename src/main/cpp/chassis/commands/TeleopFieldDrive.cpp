@@ -30,7 +30,6 @@ TeleopFieldDrive::TeleopFieldDrive(CANDriveSubsystem *chassis,
 {
     AddRequirements(m_chassis);
     m_targetFinder = DragonTargetFinder::GetInstance();
-    m_fieldHeadingDriveRequest.WithHeadingPID(m_heading_kP, m_heading_kI, m_heading_kD);
     RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::StateChange::ClimbModeStatus_Int);
 }
 
@@ -51,31 +50,8 @@ void TeleopFieldDrive::Execute()
     double forward = m_controller->GetAxisValue(TeleopControlFunctions::HOLONOMIC_DRIVE_FORWARD);
     double rotate = m_controller->GetAxisValue(TeleopControlFunctions::HOLONOMIC_DRIVE_ROTATE);
 
-    auto isFaceReefSelected = m_controller->IsButtonPressed(TeleopControlFunctions::FACE_REEF);
-
-    // Heading Control
-    if (isFaceReefSelected)
-    {
-        if (m_climbMode == RobotStateChanges::ClimbMode::ClimbModeOn)
-        {
-            m_targetHeading = units::angle::degree_t(-90);
-        }
-        else
-        {
-            FaceReef();
-        }
-        m_chassis->SetControl(m_fieldHeadingDriveRequest.WithVelocityX(forward * m_maxSpeed)
-                                  .WithTargetDirection(m_targetHeading));
-    }
-    else // if nothing is selected then just drive with the current heading
-    {
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("A"), string("rotate "), rotate);
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("A"), string("forward"), forward);
-
-        m_chassis->SetControl(
-            m_fieldDriveRequest.WithVelocityX(forward * m_maxSpeed)
-                .WithRotationalRate(rotate * m_maxAngularRate));
-    }
+    m_chassis->ArcadeDrive(-forward,
+                           -rotate);
 }
 
 bool TeleopFieldDrive::IsFinished()
@@ -88,16 +64,6 @@ bool TeleopFieldDrive::IsFinished()
 void TeleopFieldDrive::End(bool interrupted)
 {
     m_chassis->SetControl(drive::tank::requests::TankDriveBrake{});
-}
-
-void TeleopFieldDrive::FaceReef()
-{
-    auto info = m_targetFinder->GetPose(DragonTargetFinderTarget::CLOSEST_REEF_ALGAE);
-    if (info.has_value())
-    {
-        auto targetpose = get<1>(info.value());
-        m_targetHeading = frc::DriverStation::GetAlliance() == frc::DriverStation::Alliance::kBlue ? targetpose.Rotation().Degrees() - 180_deg : targetpose.Rotation().Degrees();
-    }
 }
 
 void TeleopFieldDrive::NotifyStateUpdate(RobotStateChanges::StateChange change, int value)

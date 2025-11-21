@@ -50,18 +50,4 @@ private:
     static constexpr double m_heading_kD{0.0};
 
     RobotStateChanges::ClimbMode m_climbMode = RobotStateChanges::ClimbMode::ClimbModeOff;
-
-    drive::tank::requests::FieldCentric m_fieldDriveRequest = drive::tank::requests::FieldCentric{}
-                                                             .WithDeadband(m_maxSpeed * 0.1)                                  // TODO: Investigate this deadband vs controller deadband
-                                                             .WithRotationalDeadband(m_maxAngularRate * 0.1)                  // TODO: Investigate this deadband vs controller deadband
-                                                             .WithDriveRequestType(drive::tank::requests::DriveRequestType::OpenLoopVoltage) // Use open-loop voltage for drive
-                                                             .WithDesaturateWheelSpeeds(true);
-
-    drive::tank::requests::FieldCentricFacingAngle m_fieldHeadingDriveRequest = drive::tank::requests::FieldCentricFacingAngle{}
-                                                                               .WithDeadband(m_maxSpeed * 0.1)                                  // TODO: Investigate this deadband vs controller deadband
-                                                                               .WithDriveRequestType(drive::tank::requests::DriveRequestType::OpenLoopVoltage) // Use open-loop voltage for drive
-                                                                               .WithDesaturateWheelSpeeds(true);
-
-    void FaceReef();
-    void FaceBarge();
 };
