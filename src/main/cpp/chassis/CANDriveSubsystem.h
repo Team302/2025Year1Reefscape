@@ -13,6 +13,7 @@
 #include <rev/SparkMax.h>
 #include <frc/geometry/Pose2d.h>
 #include "TankRequest.h" // Include the TankRequest header for request types
+#include "units/velocity.h"
 
 class CANDriveSubsystem : public frc2::SubsystemBase
 {
@@ -21,6 +22,7 @@ public:
   void Periodic() override;
   void SimulationPeriodic() override;
   void ArcadeDrive(double xSpeed, double zRotation);
+  void TankDrive(units::velocity::meters_per_second_t vL, units::velocity::meters_per_second_t vR);
   bool IsSamePose();
   frc::Pose2d GetPose() { return frc::Pose2d(); } // TODO: fix this;
 

@@ -32,23 +32,21 @@
 
 TrajectoryDrive::TrajectoryDrive(
     CANDriveSubsystem *chassis) : m_chassis(chassis),
-                                                    m_pathName(""),
-                                                    m_trajectoryStates(),
-                                                    m_prevPose(),
-                                                    m_wasMoving(false),
-                                                    m_timer(std::make_unique<frc::Timer>()),
-                                                    m_whyDone("Trajectory isn't finished/Error"),
-                                                    m_totalTrajectoryTime(units::time::second_t(0.0))
+                                  m_pathName(""),
+                                  m_trajectoryStates(),
+                                  m_prevPose(),
+                                  m_wasMoving(false),
+                                  m_timer(std::make_unique<frc::Timer>()),
+                                  m_whyDone("Trajectory isn't finished/Error"),
+                                  m_totalTrajectoryTime(units::time::second_t(0.0))
 {
     // This command requires the chassis subsystem
     AddRequirements(m_chassis);
-    // Enable continuous input for the heading controller for proper wrap-around
-    m_headingController.EnableContinuousInput(-std::numbers::pi, std::numbers::pi);
 }
 
 void TrajectoryDrive::Initialize()
 {
-    m_trajectory = AutonUtils::GetTrajectoryFromPathFile(m_pathName);
+    m_trajectory = AutonUtils::GetDifferentialTrajectoryFromPathFile(m_pathName);
     m_trajectoryStates = m_trajectory.value().samples;
 
     // Reset and start the timer when the command begins
@@ -58,10 +56,6 @@ void TrajectoryDrive::Initialize()
     // Reset PID controllers to clear any previous state
     m_xController.Reset();
     m_yController.Reset();
-    m_headingController.Reset();
-    m_chassisSpeeds.vx = 0_mps;
-    m_chassisSpeeds.vy = 0_mps;
-    m_chassisSpeeds.omega = units::angular_velocity::radians_per_second_t(0);
 }
 
 void TrajectoryDrive::SetPath(const std::string &pathName)
@@ -76,54 +70,40 @@ void TrajectoryDrive::Execute()
         auto desiredState = m_trajectory.value().SampleAt(m_timer.get()->Get()).value();
         if (m_chassis != nullptr)
         {
-            auto currentPose = m_chassis->GetPose();
-
-            units::meters_per_second_t xFeedback{m_xController.Calculate(currentPose.X().value(), desiredState.x.value())};
-            units::meters_per_second_t yFeedback{m_yController.Calculate(currentPose.Y().value(), desiredState.y.value())};
-            units::radians_per_second_t headingFeedback{m_headingController.Calculate(currentPose.Rotation().Radians().value(), desiredState.heading.value())};
-
-            // Generate the next speeds for the robot
-            m_chassisSpeeds.vx = desiredState.vx + xFeedback;
-            m_chassisSpeeds.vy = desiredState.vy + yFeedback;
-            m_chassisSpeeds.omega = desiredState.omega + headingFeedback;
+            m_chassis->TankDrive(desiredState.vl, desiredState.vr);
         }
     }
-
-    m_chassis->SetControl(
-        m_driveRequest.WithVelocityX(m_chassisSpeeds.vx)
-            .WithRotationalRate(m_chassisSpeeds.omega)
-            .WithForwardPerspective(drive::tank::requests::ForwardPerspectiveValue::BLUE_ALLIANCE));
 }
 
 bool TrajectoryDrive::IsFinished()
 {
     bool isDone = false;
 
-    auto currentPose = m_chassis != nullptr ? m_chassis->GetPose() : frc::Pose2d();
+    // auto currentPose = m_chassis != nullptr ? m_chassis->GetPose() : frc::Pose2d();
     if (!m_trajectoryStates.empty())
     {
-        auto currentTime = m_timer.get()->Get();
+        // auto currentTime = m_timer.get()->Get();
 
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "TrajectoryDrive", "current time", currentTime.value());
-        Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "TrajectoryDrive", "total time", m_totalTrajectoryTime.value());
+        // Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "TrajectoryDrive", "current time", currentTime.value());
+        // Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "TrajectoryDrive", "total time", m_totalTrajectoryTime.value());
 
-        if ((currentTime) / m_totalTrajectoryTime > 0.9)
-        {
+        // if ((currentTime) / m_totalTrajectoryTime > 0.9)
+        // {
 
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "TrajectoryDrive", "current pose X", currentPose.X().value());
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "TrajectoryDrive", "current pose Y", currentPose.Y().value());
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "TrajectoryDrive", "current pose Rotation", currentPose.Rotation().Degrees().value());
+        //     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "TrajectoryDrive", "current pose X", currentPose.X().value());
+        //     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "TrajectoryDrive", "current pose Y", currentPose.Y().value());
+        //     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "TrajectoryDrive", "current pose Rotation", currentPose.Rotation().Degrees().value());
 
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "TrajectoryDrive", "target pose X", m_finalState.GetPose().X().value());
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "TrajectoryDrive", "target pose Y", m_finalState.GetPose().Y().value());
-            Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "TrajectoryDrive", "target pose Rotation", m_finalState.GetPose().Rotation().Degrees().value());
+        //     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "TrajectoryDrive", "target pose X", m_finalState.GetPose().X().value());
+        //     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "TrajectoryDrive", "target pose Y", m_finalState.GetPose().Y().value());
+        //     Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "TrajectoryDrive", "target pose Rotation", m_finalState.GetPose().Rotation().Degrees().value());
 
-            isDone = IsSamePose(currentPose, m_finalState.GetPose(), m_chassisSpeeds, 10.0, 3.0, 1.5); // TO DO verify these values
-        }
-        else if (m_chassis != nullptr)
-        {
-            isDone = m_chassis->IsSamePose();
-        }
+        //     isDone = IsSamePose(currentPose, m_finalState.GetPose(), m_chassisSpeeds, 10.0, 3.0, 1.5); // TO DO verify these values
+        // }
+        // else if (m_chassis != nullptr)
+        // {
+        //     isDone = m_chassis->IsSamePose();
+        // }
     }
     else
     {

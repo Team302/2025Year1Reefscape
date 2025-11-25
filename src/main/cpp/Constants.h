@@ -23,7 +23,7 @@ namespace DriveConstants
     inline constexpr int RIGHT_FOLLOWER_ID = 2;
 
     inline constexpr int DRIVE_MOTOR_CURRENT_LIMIT = 60;
-    inline constexpr units::meters_per_second_t MAX_DRIVE_SPEED = 4_mps;
+    inline constexpr units::meters_per_second_t MAX_DRIVE_SPEED = 3.87_mps;
 } // namespace DriveConstants
 
 namespace OperatorConstants

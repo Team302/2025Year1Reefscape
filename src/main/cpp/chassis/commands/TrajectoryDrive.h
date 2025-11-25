@@ -53,9 +53,9 @@ private:
 
     bool IsSamePose(frc::Pose2d currentPose, frc::Pose2d previousPose, frc::ChassisSpeeds velocity, double xyTolerance, double rotTolerance, double speedTolerance);
 
-    std::optional<choreo::Trajectory<choreo::SwerveSample>> m_trajectory;
-    choreo::SwerveSample m_finalState;
-    std::vector<choreo::SwerveSample> m_trajectoryStates;
+    std::optional<choreo::Trajectory<choreo::DifferentialSample>> m_trajectory;
+    choreo::DifferentialSample m_finalState;
+    std::vector<choreo::DifferentialSample> m_trajectoryStates;
 
     frc::Pose2d m_prevPose;
     bool m_wasMoving;

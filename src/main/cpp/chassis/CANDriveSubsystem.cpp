@@ -79,6 +79,14 @@ void CANDriveSubsystem::ArcadeDrive(double xSpeed, double zRotation)
   drive.ArcadeDrive(xSpeed, zRotation);
 }
 
+// sets the speed of the drive motors
+void CANDriveSubsystem::TankDrive(units::velocity::meters_per_second_t vL, units::velocity::meters_per_second_t vR)
+{
+  auto leftSpeed = (vL / DriveConstants::MAX_DRIVE_SPEED).value();
+  auto rightSpeed = (vR / DriveConstants::MAX_DRIVE_SPEED).value();
+  drive.TankDrive(leftSpeed, rightSpeed);
+}
+
 bool CANDriveSubsystem::IsSamePose()
 {
   bool isCurrentlyStopped = GetPose().Translation().Distance(m_prevPose.Translation()) < m_distanceThreshold;
