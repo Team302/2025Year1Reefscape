@@ -163,8 +163,8 @@ void CANDriveSubsystem::UpdateOdometry(units::velocity::meters_per_second_t vL, 
   frc::ChassisSpeeds chassisSpeeds = m_kinematics.ToChassisSpeeds(wheelSpeeds);
 
   frc::Twist2d twist{
-      chassisSpeeds.vx * dt,
-      chassisSpeeds.vy * dt,
+      -chassisSpeeds.vx * dt,
+      -chassisSpeeds.vy * dt,
       chassisSpeeds.omega * dt};
 
   m_currentPose = m_currentPose.Exp(twist);
