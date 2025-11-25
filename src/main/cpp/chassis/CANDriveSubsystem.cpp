@@ -76,12 +76,14 @@ void CANDriveSubsystem::SimulationPeriodic() {}
 // sets the speed of the drive motors
 void CANDriveSubsystem::ArcadeDrive(double xSpeed, double zRotation)
 {
+  UpdateOdometry(xSpeed, zRotation);
   drive.ArcadeDrive(xSpeed, zRotation);
 }
 
 // sets the speed of the drive motors
 void CANDriveSubsystem::TankDrive(units::velocity::meters_per_second_t vL, units::velocity::meters_per_second_t vR)
 {
+  UpdateOdometry(vL, vR);
   auto leftSpeed = (vL / DriveConstants::MAX_DRIVE_SPEED).value();
   auto rightSpeed = (vR / DriveConstants::MAX_DRIVE_SPEED).value();
   drive.TankDrive(leftSpeed, rightSpeed);
@@ -107,48 +109,9 @@ bool CANDriveSubsystem::IsSamePose()
   return m_debounceTimer.HasElapsed(m_samePoseTime);
 }
 
-// Overloaded SetControl for FieldCentric
-void CANDriveSubsystem::SetControl(const drive::tank::requests::FieldCentric &request)
-{
-  // Apply FieldCentric control logic
-  leftLeader.Set(request.VelocityForward.to<double>());
-  rightLeader.Set(request.VelocityForward.to<double>());
-}
-
-// Overloaded SetControl for RobotCentric
-void CANDriveSubsystem::SetControl(const drive::tank::requests::RobotCentric &request)
-{
-  // Apply RobotCentric control logic
-  leftLeader.Set(request.VelocityForward.to<double>());
-  rightLeader.Set(request.VelocityForward.to<double>());
-}
-
-// Overloaded SetControl for TankDriveBrake
-void CANDriveSubsystem::SetControl(const drive::tank::requests::TankDriveBrake &request)
-{
-  // Apply TankDriveBrake control logic (stop the motors)
-  leftLeader.Set(0.0);
-  rightLeader.Set(0.0);
-}
-
-// Overloaded SetControl for Idle
-void CANDriveSubsystem::SetControl(const drive::tank::requests::Idle &request)
-{
-  leftLeader.Set(0.0);
-  rightLeader.Set(0.0);
-}
-
-// Overloaded SetControl for FieldCentricFacingAngle
-void CANDriveSubsystem::SetControl(const drive::tank::requests::FieldCentricFacingAngle &request)
-{
-  // Placeholder: treat like FieldCentric using VelocityForward only (preserve current style)
-  leftLeader.Set(request.VelocityForward.to<double>());
-  rightLeader.Set(request.VelocityForward.to<double>());
-}
-
 void CANDriveSubsystem::ResetPose(frc::Pose2d pose)
 {
-  // Placeholder: reset pose logic
+  m_currentPose = pose;
   m_prevPose = pose;
 }
 void CANDriveSubsystem::ResetSamePose()
@@ -164,12 +127,15 @@ void CANDriveSubsystem::AddVisionMeasurement(const frc::Pose2d &visionPose, unit
 {
   // Placeholder: add vision measurement logic
 }
-void CANDriveSubsystem::SeedFieldCentric()
-{
-  // Placeholder: seed field centric logic
-}
+
 double CANDriveSubsystem::GetRotationRateDegreesPerSecond()
 {
-  // Placeholder: return rotation rate logic
   return 0.0;
+}
+
+void CANDriveSubsystem::UpdateOdometry(double xSpeed, double zRotation)
+{
+}
+void CANDriveSubsystem::UpdateOdometry(units::velocity::meters_per_second_t vL, units::velocity::meters_per_second_t vR)
+{
 }

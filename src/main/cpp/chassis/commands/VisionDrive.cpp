@@ -49,20 +49,12 @@ void VisionDrive::Execute()
 
         auto rotate = std::clamp(units::angular_velocity::degrees_per_second_t(m_rotatePID.Calculate(tx.value())), -m_visionAngularRate, m_visionAngularRate);
         auto forward = std::clamp(units::velocity::meters_per_second_t(m_drivePID.Calculate(ty.value())), -m_maxVisionSpeed, m_maxVisionSpeed);
-
-        m_chassis->SetControl(
-            m_RobotDriveRequest.WithVelocityX(forward)
-                .WithRotationalRate(rotate));
     }
     else
     {
         double forward = m_controller->GetAxisValue(TeleopControlFunctions::HOLONOMIC_DRIVE_FORWARD);
         // double strafe = m_controller->GetAxisValue(TeleopControlFunctions::HOLONOMIC_DRIVE_STRAFE);
         double rotate = m_controller->GetAxisValue(TeleopControlFunctions::HOLONOMIC_DRIVE_ROTATE);
-
-        m_chassis->SetControl(
-            m_fieldDriveRequest.WithVelocityX(forward * m_maxSpeed)
-                .WithRotationalRate(rotate * m_maxAngularRate));
     }
 }
 
@@ -75,5 +67,4 @@ bool VisionDrive::IsFinished()
 
 void VisionDrive::End(bool interrupted)
 {
-    m_chassis->SetControl(drive::tank::requests::TankDriveBrake{});
 }

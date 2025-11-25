@@ -63,7 +63,6 @@ bool TeleopFieldDrive::IsFinished()
 
 void TeleopFieldDrive::End(bool interrupted)
 {
-    m_chassis->SetControl(drive::tank::requests::TankDriveBrake{});
 }
 
 void TeleopFieldDrive::NotifyStateUpdate(RobotStateChanges::StateChange change, int value)

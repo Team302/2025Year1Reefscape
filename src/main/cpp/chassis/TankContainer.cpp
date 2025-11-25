@@ -76,13 +76,6 @@ void TankContainer::CreateStandardDriveCommands(TeleopControl *controller)
     if (m_chassis != nullptr)
     {
         m_chassis->SetDefaultCommand(std::move(m_fieldDrive));
-
-        frc2::RobotModeTriggers::Disabled().WhileTrue(m_chassis->ApplyRequest([]
-                                                                              { return drive::tank::requests::Idle{}; })
-                                                          .IgnoringDisable(true));
-
-        isResetYawSelected.OnTrue(m_chassis->RunOnce([this, controller]
-                                                     { m_chassis->SeedFieldCentric(); }));
     }
 
     isRobotOriented.WhileTrue(std::move(m_robotDrive));

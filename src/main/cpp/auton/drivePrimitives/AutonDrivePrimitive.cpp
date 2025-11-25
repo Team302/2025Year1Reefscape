@@ -75,8 +75,6 @@ void AutonDrivePrimitive::Init(PrimitiveParams *params)
     case PRIMITIVE_IDENTIFIER::DO_NOTHING:
     case PRIMITIVE_IDENTIFIER::DO_NOTHING_MECHANISMS:
     {
-        m_managedCommand = frc2::cmd::RunOnce([this]()
-                                              { m_chassis->SetControl(drive::tank::requests::TankDriveBrake{}); }, {m_chassis});
         break;
     }
 
