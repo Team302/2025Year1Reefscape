@@ -3,7 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "CANDriveSubsystem.h"
-#include "TankRequest.h"
+#include "utils/logging/debug/Logger.h"
 
 using namespace DriveConstants;
 // Singleton instance
@@ -169,4 +169,7 @@ void CANDriveSubsystem::UpdateOdometry(units::velocity::meters_per_second_t vL, 
       chassisSpeeds.omega * dt};
 
   m_currentPose = m_currentPose.Exp(twist);
+
+  Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "CANDriveSubsystem", "Current Pose X", m_currentPose.X().value());
+  Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "CANDriveSubsystem", "Current Pose Y", m_currentPose.Y().value());
 }

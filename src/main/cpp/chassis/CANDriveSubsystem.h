@@ -12,7 +12,6 @@
 #include <frc2/command/SubsystemBase.h>
 #include <rev/SparkMax.h>
 #include <frc/geometry/Pose2d.h>
-#include "TankRequest.h" // Include the TankRequest header for request types
 #include "units/velocity.h"
 #include <frc/kinematics/DifferentialDriveKinematics.h>
 

@@ -21,7 +21,6 @@
 #include "utils/logging/debug/Logger.h"
 #include "frc2/command/Commands.h"
 #include <frc2/command/ProxyCommand.h>
-#include "chassis/TankRequest.h"
 
 AutonDrivePrimitive::AutonDrivePrimitive() : m_chassis(CANDriveSubsystem::GetInstance()),
                                              m_timer(std::make_unique<frc::Timer>()),

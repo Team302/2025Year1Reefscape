@@ -14,7 +14,6 @@
 //====================================================================================================================================================
 
 #include "chassis/commands/VisionDrive.h"
-#include "chassis/TankRequest.h"
 
 // Note the simplified constructor and AddRequirements call
 VisionDrive::VisionDrive(CANDriveSubsystem *chassis,

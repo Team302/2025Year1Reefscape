@@ -75,8 +75,6 @@ void TankContainer::CreateStandardDriveCommands(TeleopControl *controller)
     {
         m_chassis->SetDefaultCommand(std::move(m_robotDrive));
     }
-
-    isRobotOriented.WhileTrue(std::move(m_robotDrive));
 }
 
 void TankContainer::CreateReefscapeDriveToCommands(TeleopControl *controller)
