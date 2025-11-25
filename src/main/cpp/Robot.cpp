@@ -78,7 +78,7 @@ void Robot::RobotPeriodic()
         m_quest->RefreshNT();
     }
 
-    // UpdateDriveTeamFeedback();
+    UpdateDriveTeamFeedback();
 }
 
 void Robot::DisabledPeriodic()
