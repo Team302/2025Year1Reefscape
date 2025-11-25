@@ -18,7 +18,6 @@
 #include "commands/VisionDrive.h"
 #include "state/RobotState.h"
 #include "commands/TrajectoryDrive.h"
-#include "commands/TeleopFieldDrive.h"
 #include "commands/TeleopRobotDrive.h"
 #include "frc2/command/Commands.h"
 #include "frc2/command/button/RobotModeTriggers.h"
@@ -38,7 +37,6 @@ TankContainer *TankContainer::GetInstance()
 TankContainer::TankContainer()
     : m_chassis(CANDriveSubsystem::GetInstance()),
       m_maxSpeed(DriveConstants::MAX_DRIVE_SPEED),
-      m_fieldDrive(std::make_unique<TeleopFieldDrive>(m_chassis, TeleopControl::GetInstance(), m_maxSpeed, m_maxAngularRate)),
       m_robotDrive(std::make_unique<TeleopRobotDrive>(m_chassis, TeleopControl::GetInstance(), m_maxSpeed, m_maxAngularRate)),
       m_driveToCoralStationSidewall(std::make_unique<DriveToTarget>(m_chassis, DragonTargetFinderTarget::CLOSEST_CORAL_STATION_SIDWALL_SIDE)),
       m_driveToCoralStationAlliance(std::make_unique<DriveToTarget>(m_chassis, DragonTargetFinderTarget::CLOSEST_CORAL_STATION_ALLIANCE_SIDE)),
@@ -75,7 +73,7 @@ void TankContainer::CreateStandardDriveCommands(TeleopControl *controller)
 
     if (m_chassis != nullptr)
     {
-        m_chassis->SetDefaultCommand(std::move(m_fieldDrive));
+        m_chassis->SetDefaultCommand(std::move(m_robotDrive));
     }
 
     isRobotOriented.WhileTrue(std::move(m_robotDrive));

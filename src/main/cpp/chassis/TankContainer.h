@@ -33,7 +33,6 @@ private:
     units::meters_per_second_t m_maxSpeed;
     static constexpr units::radians_per_second_t m_maxAngularRate{8_tps};
 
-    frc2::CommandPtr m_fieldDrive;
     frc2::CommandPtr m_robotDrive;
     frc2::CommandPtr m_driveToCoralStationSidewall;
     frc2::CommandPtr m_driveToCoralStationAlliance;

@@ -67,9 +67,14 @@ CANDriveSubsystem::CANDriveSubsystem()
   leftLeader.Configure(sparkConfig,
                        rev::spark::SparkBase::ResetMode::kResetSafeParameters,
                        rev::spark::SparkBase::PersistMode::kPersistParameters);
+
+  m_odometryTimer.Start();
+  m_lastTime = m_odometryTimer.Get();
 };
 
-void CANDriveSubsystem::Periodic() {}
+void CANDriveSubsystem::Periodic()
+{
+}
 
 void CANDriveSubsystem::SimulationPeriodic() {}
 
@@ -135,7 +140,33 @@ double CANDriveSubsystem::GetRotationRateDegreesPerSecond()
 
 void CANDriveSubsystem::UpdateOdometry(double xSpeed, double zRotation)
 {
+  double leftPercent = xSpeed + zRotation;
+  double rightPercent = xSpeed - zRotation;
+
+  leftPercent = std::clamp(leftPercent, -1.0, 1.0);
+  rightPercent = std::clamp(rightPercent, -1.0, 1.0);
+
+  auto vL = leftPercent * DriveConstants::MAX_DRIVE_SPEED;
+  auto vR = rightPercent * DriveConstants::MAX_DRIVE_SPEED;
+
+  UpdateOdometry(vL, vR);
 }
+
 void CANDriveSubsystem::UpdateOdometry(units::velocity::meters_per_second_t vL, units::velocity::meters_per_second_t vR)
 {
+  m_prevPose = m_currentPose;
+
+  units::second_t currentTime = m_odometryTimer.Get();
+  units::second_t dt = currentTime - m_lastTime;
+  m_lastTime = currentTime;
+
+  frc::DifferentialDriveWheelSpeeds wheelSpeeds{vL, vR};
+  frc::ChassisSpeeds chassisSpeeds = m_kinematics.ToChassisSpeeds(wheelSpeeds);
+
+  frc::Twist2d twist{
+      chassisSpeeds.vx * dt,
+      chassisSpeeds.vy * dt,
+      chassisSpeeds.omega * dt};
+
+  m_currentPose = m_currentPose.Exp(twist);
 }

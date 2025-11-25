@@ -24,6 +24,8 @@ namespace DriveConstants
 
     inline constexpr int DRIVE_MOTOR_CURRENT_LIMIT = 60;
     inline constexpr units::meters_per_second_t MAX_DRIVE_SPEED = 3.87_mps;
+
+    inline constexpr units::length::inch_t kTrackWidth = 21.75_in;
 } // namespace DriveConstants
 
 namespace OperatorConstants

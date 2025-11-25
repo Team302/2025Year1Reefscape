@@ -14,6 +14,7 @@
 #include <frc/geometry/Pose2d.h>
 #include "TankRequest.h" // Include the TankRequest header for request types
 #include "units/velocity.h"
+#include <frc/kinematics/DifferentialDriveKinematics.h>
 
 class CANDriveSubsystem : public frc2::SubsystemBase
 {
@@ -51,4 +52,10 @@ private:
   const units::length::inch_t m_distanceThreshold{0.25};
   frc::Pose2d m_prevPose;
   frc::Pose2d m_currentPose;
+
+  frc::Timer m_odometryTimer;
+  units::second_t m_lastTime{0_s};
+
+  // Kinematics object to help convert wheel speeds to robot speeds
+  frc::DifferentialDriveKinematics m_kinematics{DriveConstants::kTrackWidth};
 };
