@@ -95,11 +95,7 @@ void DriveToTarget::Execute()
                 }
             }
         }
-        m_chassis->SetControl(
-            m_driveRequest.WithVelocityX(chassisSpeeds.vx)
-                .WithTargetDirection(m_endPose.Rotation().Degrees())
-                .WithHeadingPID(m_rotationKP, m_rotationKI, m_rotationKD)
-                .WithForwardPerspective(drive::tank::requests::ForwardPerspectiveValue::BLUE_ALLIANCE));
+
         Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, "DriveToFieldElement", "Error", m_endPose.Translation().Distance(m_currentPose.Translation()).value());
     }
 
@@ -141,7 +137,6 @@ bool DriveToTarget::IsFinished()
 
 void DriveToTarget::End(bool interrupted)
 {
-    m_chassis->SetControl(drive::tank::requests::TankDriveBrake{});
 }
 
 void DriveToTarget::CalculateFeedForward(frc::ChassisSpeeds &chassisSpeeds)

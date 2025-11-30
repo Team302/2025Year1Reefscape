@@ -20,7 +20,7 @@
 #include <frc/geometry/Pose2d.h>
 #include "chassis/CANDriveSubsystem.h"
 #include "fielddata/DragonTargetFinder.h"
-#include "chassis/TankRequest.h"
+
 #include "units/acceleration.h"
 
 class DriveToTarget : public frc2::CommandHelper<frc2::Command, DriveToTarget>
@@ -47,8 +47,6 @@ private:
     DragonTargetFinderTarget m_target;
     DragonTargetFinder *m_targetFinder;
     DragonTargetFinderData m_currentType = DragonTargetFinderData::NOT_FOUND;
-
-    drive::tank::requests::FieldCentricFacingAngle m_driveRequest;
 
     bool m_hasTarget = false;
     bool m_isSamePose = false;

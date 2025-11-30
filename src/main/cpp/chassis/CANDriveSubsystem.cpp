@@ -3,7 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "CANDriveSubsystem.h"
-#include "TankRequest.h"
 
 using namespace DriveConstants;
 // Singleton instance
@@ -67,21 +66,28 @@ CANDriveSubsystem::CANDriveSubsystem()
   leftLeader.Configure(sparkConfig,
                        rev::spark::SparkBase::ResetMode::kResetSafeParameters,
                        rev::spark::SparkBase::PersistMode::kPersistParameters);
+
+  m_odometryTimer.Start();
+  m_lastTime = m_odometryTimer.Get();
 };
 
-void CANDriveSubsystem::Periodic() {}
+void CANDriveSubsystem::Periodic()
+{
+}
 
 void CANDriveSubsystem::SimulationPeriodic() {}
 
 // sets the speed of the drive motors
 void CANDriveSubsystem::ArcadeDrive(double xSpeed, double zRotation)
 {
+  UpdateOdometry(xSpeed, zRotation);
   drive.ArcadeDrive(xSpeed, zRotation);
 }
 
 // sets the speed of the drive motors
 void CANDriveSubsystem::TankDrive(units::velocity::meters_per_second_t vL, units::velocity::meters_per_second_t vR)
 {
+  UpdateOdometry(vL, vR);
   auto leftSpeed = (vL / DriveConstants::MAX_DRIVE_SPEED).value();
   auto rightSpeed = (vR / DriveConstants::MAX_DRIVE_SPEED).value();
   drive.TankDrive(leftSpeed, rightSpeed);
@@ -107,48 +113,9 @@ bool CANDriveSubsystem::IsSamePose()
   return m_debounceTimer.HasElapsed(m_samePoseTime);
 }
 
-// Overloaded SetControl for FieldCentric
-void CANDriveSubsystem::SetControl(const drive::tank::requests::FieldCentric &request)
-{
-  // Apply FieldCentric control logic
-  leftLeader.Set(request.VelocityForward.to<double>());
-  rightLeader.Set(request.VelocityForward.to<double>());
-}
-
-// Overloaded SetControl for RobotCentric
-void CANDriveSubsystem::SetControl(const drive::tank::requests::RobotCentric &request)
-{
-  // Apply RobotCentric control logic
-  leftLeader.Set(request.VelocityForward.to<double>());
-  rightLeader.Set(request.VelocityForward.to<double>());
-}
-
-// Overloaded SetControl for TankDriveBrake
-void CANDriveSubsystem::SetControl(const drive::tank::requests::TankDriveBrake &request)
-{
-  // Apply TankDriveBrake control logic (stop the motors)
-  leftLeader.Set(0.0);
-  rightLeader.Set(0.0);
-}
-
-// Overloaded SetControl for Idle
-void CANDriveSubsystem::SetControl(const drive::tank::requests::Idle &request)
-{
-  leftLeader.Set(0.0);
-  rightLeader.Set(0.0);
-}
-
-// Overloaded SetControl for FieldCentricFacingAngle
-void CANDriveSubsystem::SetControl(const drive::tank::requests::FieldCentricFacingAngle &request)
-{
-  // Placeholder: treat like FieldCentric using VelocityForward only (preserve current style)
-  leftLeader.Set(request.VelocityForward.to<double>());
-  rightLeader.Set(request.VelocityForward.to<double>());
-}
-
 void CANDriveSubsystem::ResetPose(frc::Pose2d pose)
 {
-  // Placeholder: reset pose logic
+  m_currentPose = pose;
   m_prevPose = pose;
 }
 void CANDriveSubsystem::ResetSamePose()
@@ -164,12 +131,41 @@ void CANDriveSubsystem::AddVisionMeasurement(const frc::Pose2d &visionPose, unit
 {
   // Placeholder: add vision measurement logic
 }
-void CANDriveSubsystem::SeedFieldCentric()
-{
-  // Placeholder: seed field centric logic
-}
+
 double CANDriveSubsystem::GetRotationRateDegreesPerSecond()
 {
-  // Placeholder: return rotation rate logic
   return 0.0;
+}
+
+void CANDriveSubsystem::UpdateOdometry(double xSpeed, double zRotation)
+{
+  double leftPercent = xSpeed + zRotation;
+  double rightPercent = xSpeed - zRotation;
+
+  leftPercent = std::clamp(leftPercent, -1.0, 1.0);
+  rightPercent = std::clamp(rightPercent, -1.0, 1.0);
+
+  auto vL = leftPercent * DriveConstants::MAX_DRIVE_SPEED;
+  auto vR = rightPercent * DriveConstants::MAX_DRIVE_SPEED;
+
+  UpdateOdometry(vL, vR);
+}
+
+void CANDriveSubsystem::UpdateOdometry(units::velocity::meters_per_second_t vL, units::velocity::meters_per_second_t vR)
+{
+  m_prevPose = m_currentPose;
+
+  units::second_t currentTime = m_odometryTimer.Get();
+  units::second_t dt = currentTime - m_lastTime;
+  m_lastTime = currentTime;
+
+  frc::DifferentialDriveWheelSpeeds wheelSpeeds{vL, vR};
+  frc::ChassisSpeeds chassisSpeeds = m_kinematics.ToChassisSpeeds(wheelSpeeds);
+
+  frc::Twist2d twist{
+      -chassisSpeeds.vx * dt,
+      -chassisSpeeds.vy * dt,
+      chassisSpeeds.omega * dt};
+
+  m_currentPose = m_currentPose.Exp(twist);
 }

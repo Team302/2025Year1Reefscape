@@ -40,10 +40,4 @@ private:
     TeleopControl *m_controller;
     units::velocity::meters_per_second_t m_maxSpeed;
     units::angular_velocity::degrees_per_second_t m_maxAngularRate;
-
-    drive::tank::requests::RobotCentric m_RobotDriveRequest = drive::tank::requests::RobotCentric{}
-                                                             .WithDeadband(m_maxSpeed * 0.1)
-                                                             .WithRotationalDeadband(m_maxAngularRate * 0.1) // Add a 10% deadband
-                                                             .WithDriveRequestType(drive::tank::requests::DriveRequestType::OpenLoopVoltage)
-                                                             .WithDesaturateWheelSpeeds(true);
 };

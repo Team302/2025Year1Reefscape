@@ -78,7 +78,7 @@ void Robot::RobotPeriodic()
         m_quest->RefreshNT();
     }
 
-    // UpdateDriveTeamFeedback();
+    UpdateDriveTeamFeedback();
 }
 
 void Robot::DisabledPeriodic()
@@ -181,14 +181,14 @@ void Robot::InitializeDriveteamFeedback()
 
 void Robot::UpdateDriveTeamFeedback()
 {
-    // if (m_previewer != nullptr)
-    // {
-    //     m_previewer->CheckCurrentAuton();
-    // }
-    // if (m_field != nullptr && m_dragonswerveposeestimator != nullptr)
-    // {
-    //     m_field->UpdateRobotPosition(m_dragonswerveposeestimator->GetPose());
-    // }
+    if (m_previewer != nullptr)
+    {
+        m_previewer->CheckCurrentAuton();
+    }
+    if (m_field != nullptr && m_dragonswerveposeestimator != nullptr)
+    {
+        m_field->UpdateRobotPosition(m_dragonswerveposeestimator->GetPose());
+    }
     // auto feedback = DriverFeedback::GetInstance();
     // if (feedback != nullptr)
     // {

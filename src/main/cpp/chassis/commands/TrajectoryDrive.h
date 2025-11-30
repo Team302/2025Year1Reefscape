@@ -78,6 +78,4 @@ private:
     frc::PIDController m_headingController{kPHeading, kIHeading, kDHeading};
 
     frc::ChassisSpeeds m_chassisSpeeds;
-
-    drive::tank::requests::FieldCentric m_driveRequest;
 };
