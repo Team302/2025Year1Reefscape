@@ -28,6 +28,7 @@
 #include "chassis/ChassisOptionEnums.h"
 #include "vision/DragonVision.h"
 #include "auton/ZoneParams.h"
+#include "mechanisms/Delivery/Delivery.h"
 
 // Third Party Includes
 
@@ -52,6 +53,7 @@ public:
                     VISION_ALIGNMENT visionAlignment,
                     // bool changeTaleState,
                     // DragonTale::STATE_NAMES taleState,
+                    Delivery::STATE_NAMES deliveryState,
                     ChassisOptionEnums::DriveStateType pathUpdateOption); // create zones parameter of type ZonesParamsVector
 
     PrimitiveParams() = delete;
@@ -71,6 +73,11 @@ public:
     // bool IsTaleStateChanging() const { return m_changeTaleState; }
     // DragonTale::STATE_NAMES GetTaleState() const { return m_taleState; }
 
+    Delivery::STATE_NAMES GetDeliveryState() const
+    {
+        // @ADDMECH add your mechanism state retrieval
+        return m_deliveryState;
+    }
     void SetVisionAlignment(VISION_ALIGNMENT visionAlignment) { m_visionAlignment = visionAlignment; }
 
 private:
@@ -86,6 +93,8 @@ private:
     // bool m_changeTaleState;
 
     // DragonTale::STATE_NAMES m_taleState;
+
+    Delivery::STATE_NAMES m_deliveryState;
 
     ZoneParamsVector m_zones;
 

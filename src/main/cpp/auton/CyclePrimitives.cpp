@@ -32,6 +32,7 @@
 #include "auton/PrimitiveParser.h"
 #include "auton/drivePrimitives/IPrimitive.h"
 #include "utils/logging/debug/Logger.h"
+#include "mechanisms/Delivery/Delivery.h"
 
 #include "chassis/ChassisOptionEnums.h"
 
@@ -203,17 +204,25 @@ void CyclePrimitives::RunDriveStop()
 void CyclePrimitives::SetMechanismStatesFromParam(PrimitiveParams *params)
 {
 
-	// auto config = MechanismConfigMgr::GetInstance()->GetCurrentConfig();
-	// if (params != nullptr && config != nullptr)
-	// {
-	// 	// auto taleStateMgr = config->GetMechanism(MechanismTypes::MECHANISM_TYPE::DRAGON_TALE);
-	// 	// auto taleMgr = taleStateMgr != nullptr ? dynamic_cast<DragonTale *>(taleStateMgr) : nullptr;
+	auto config = MechanismConfigMgr::GetInstance()->GetCurrentConfig();
+	if (params != nullptr && config != nullptr)
+	{
+		// auto taleStateMgr = config->GetMechanism(MechanismTypes::MECHANISM_TYPE::DRAGON_TALE);
+		// 	// auto taleMgr = taleStateMgr != nullptr ? dynamic_cast<DragonTale *>(taleStateMgr) : nullptr;
 
-	// 	// if (taleMgr != nullptr && params->IsTaleStateChanging())
-	// 	// {
-	// 	// 	taleMgr->SetCurrentState(params->GetTaleState(), true);
-	// 	// }
-	// }
+		// 	// if (taleMgr != nullptr && params->IsTaleStateChanging())
+		// 	// {
+		// 	// 	taleMgr->SetCurrentState(params->GetTaleState(), true);
+		// 	// }
+
+		auto deliveryStateMgr = config->GetMechanism(MechanismTypes::MECHANISM_TYPE::DELIVERY);
+		auto deliveryMgr = deliveryStateMgr != nullptr ? dynamic_cast<Delivery *>(deliveryStateMgr) : nullptr;
+
+		if (deliveryMgr != nullptr)
+		{
+			deliveryMgr->SetCurrentState(params->GetDeliveryState(), true);
+		}
+	}
 }
 void CyclePrimitives::SetMechanismStatesFromZone(ZoneParams *params)
 {

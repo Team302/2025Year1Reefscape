@@ -28,6 +28,7 @@ PrimitiveParams::PrimitiveParams(PRIMITIVE_IDENTIFIER id,
 								 VISION_ALIGNMENT visionAlignment,
 								 //  bool taleStateChanged,
 								 //  DragonTale::STATE_NAMES taleState,
+								 Delivery::STATE_NAMES deliveryState,
 								 ChassisOptionEnums::DriveStateType pathUpdateOption) : m_id(id), // Primitive ID
 																						m_time(time),
 																						m_headingOption(headingOpt),
@@ -36,6 +37,7 @@ PrimitiveParams::PrimitiveParams(PRIMITIVE_IDENTIFIER id,
 																						m_visionAlignment(visionAlignment),
 																						// m_changeTaleState(taleStateChanged),
 																						// m_taleState(taleState),
+																						m_deliveryState(deliveryState),
 																						m_zones(zones),
 																						m_pathUpdateOption(pathUpdateOption)
 

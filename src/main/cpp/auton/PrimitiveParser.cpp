@@ -129,7 +129,9 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
 
                     // auto taleState = DragonTale::STATE_READY;
                     // bool changeTaleState = false;
-                    // auto config = MechanismConfigMgr::GetInstance()->GetCurrentConfig();
+                    auto config = MechanismConfigMgr::GetInstance()->GetCurrentConfig();
+
+                    auto deliveryState = Delivery::STATE_NAMES::STATE_OFF;
 
                     std::string pathName;
                     std::string choreoTrajectoryName;
@@ -196,17 +198,16 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                         {
                             choreoTrajectoryName = attr.value();
                         }
-                        else if (strcmp(attr.name(), "taleOption") == 0)
+                        else if (strcmp(attr.name(), "deliveryOption") == 0)
                         {
-                            // if (config != nullptr && config->GetMechanism(MechanismTypes::DRAGON_TALE) != nullptr)
-                            // {
-                            //     auto taleStateItr = DragonTale::stringToSTATE_NAMESEnumMap.find(attr.value());
-                            //     if (taleStateItr != DragonTale::stringToSTATE_NAMESEnumMap.end())
-                            //     {
-                            //         taleState = taleStateItr->second;
-                            //         changeTaleState = true;
-                            //     }
-                            // }
+                            if (config != nullptr && config->GetMechanism(MechanismTypes::DELIVERY) != nullptr)
+                            {
+                                auto deliveryStateItr = Delivery::stringToSTATE_NAMESEnumMap.find(attr.value());
+                                if (deliveryStateItr != Delivery::stringToSTATE_NAMESEnumMap.end())
+                                {
+                                    deliveryState = deliveryStateItr->second;
+                                }
+                            }
                         }
 
                         else if (strcmp(attr.name(), "visionAlignment") == 0)
@@ -258,6 +259,7 @@ PrimitiveParamsVector PrimitiveParser::ParseXML(string fulldirfile)
                                                                      visionAlignment,
                                                                      //  changeTaleState,
                                                                      //  taleState,
+                                                                     deliveryState,
                                                                      pathUpdateOption));
                     }
                     else
