@@ -32,10 +32,8 @@ void TeleopRobotDrive::Execute()
 {
     double forward = m_controller->GetAxisValue(TeleopControlFunctions::HOLONOMIC_DRIVE_FORWARD);
     double rotate = m_controller->GetAxisValue(TeleopControlFunctions::HOLONOMIC_DRIVE_ROTATE);
-
-    m_chassis->SetControl(
-        m_RobotDriveRequest.WithVelocityX(forward * m_maxSpeed)
-            .WithRotationalRate(rotate * m_maxAngularRate));
+    m_chassis->ArcadeDrive(-forward,
+                           -rotate);
 }
 
 bool TeleopRobotDrive::IsFinished()
@@ -47,5 +45,4 @@ bool TeleopRobotDrive::IsFinished()
 
 void TeleopRobotDrive::End(bool interrupted)
 {
-    m_chassis->SetControl(drive::tank::requests::TankDriveBrake{});
 }

@@ -23,7 +23,6 @@
 #include "units/velocity.h"
 #include "units/angular_velocity.h"
 #include "frc/controller/PIDController.h"
-#include "chassis/TankRequest.h"
 
 class VisionDrive : public frc2::CommandHelper<frc2::Command, VisionDrive>
 {
@@ -57,16 +56,4 @@ private:
 
     frc::PIDController m_drivePID{m_forwardkP, m_forwardkI, m_forwardkD};
     frc::PIDController m_rotatePID{m_rotationkP, m_rotationkI, m_rotationkD};
-
-    drive::tank::requests::RobotCentric m_RobotDriveRequest = drive::tank::requests::RobotCentric{}
-                                                             .WithDeadband(m_maxSpeed * 0.1)
-                                                             .WithRotationalDeadband(m_maxAngularRate * 0.1) // Add a 10% deadband
-                                                             .WithDriveRequestType(drive::tank::requests::DriveRequestType::OpenLoopVoltage)
-                                                             .WithDesaturateWheelSpeeds(true); // Use open-loop control for drive motors
-
-    drive::tank::requests::FieldCentric m_fieldDriveRequest = drive::tank::requests::FieldCentric{}
-                                                             .WithDeadband(m_maxSpeed * 0.1)                                  // TODO: Investigate this deadband vs controller deadband
-                                                             .WithRotationalDeadband(m_maxAngularRate * 0.1)                  // TODO: Investigate this deadband vs controller deadband
-                                                             .WithDriveRequestType(drive::tank::requests::DriveRequestType::OpenLoopVoltage) // Use open-loop voltage for drive
-                                                             .WithDesaturateWheelSpeeds(true);
 };

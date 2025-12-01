@@ -12,8 +12,8 @@
 #include <frc2/command/SubsystemBase.h>
 #include <rev/SparkMax.h>
 #include <frc/geometry/Pose2d.h>
-#include "TankRequest.h" // Include the TankRequest header for request types
 #include "units/velocity.h"
+#include <frc/kinematics/DifferentialDriveKinematics.h>
 
 class CANDriveSubsystem : public frc2::SubsystemBase
 {
@@ -24,41 +24,15 @@ public:
   void ArcadeDrive(double xSpeed, double zRotation);
   void TankDrive(units::velocity::meters_per_second_t vL, units::velocity::meters_per_second_t vR);
   bool IsSamePose();
-  frc::Pose2d GetPose() { return frc::Pose2d(); } // TODO: fix this;
+  frc::Pose2d GetPose() { return m_currentPose; };
 
-  // Overloaded SetControl functions for different request types
-  void SetControl(const drive::tank::requests::FieldCentric &request);
-  void SetControl(const drive::tank::requests::RobotCentric &request);
-  void SetControl(const drive::tank::requests::TankDriveBrake &request);
-  void SetControl(const drive::tank::requests::Idle &request);
-  void SetControl(const drive::tank::requests::FieldCentricFacingAngle &request);
-
-  // ApplyRequest helpers (lvalue-producing supplier)
-  template <typename RequestSupplier>
-    requires std::is_lvalue_reference_v<std::invoke_result_t<RequestSupplier>> &&
-             requires(RequestSupplier rs, CANDriveSubsystem &drive) { drive.SetControl(rs()); }
-  frc2::CommandPtr ApplyRequest(RequestSupplier request)
-  {
-    return frc2::cmd::Run([this, request = std::move(request)]
-                          { SetControl(request()); }, {this});
-  }
-
-  // ApplyRequest helpers (rvalue / value-producing supplier)
-  template <typename RequestSupplier>
-    requires std::negation_v<std::is_lvalue_reference<std::invoke_result_t<RequestSupplier>>> &&
-             requires(RequestSupplier rs, CANDriveSubsystem &drive) { drive.SetControl(rs()); }
-  frc2::CommandPtr ApplyRequest(RequestSupplier request)
-  {
-    return frc2::cmd::Run([this, request = std::move(request)]
-                          { SetControl(request()); }, {this});
-  }
+  void UpdateOdometry(double xSpeed, double zRotation);
+  void UpdateOdometry(units::velocity::meters_per_second_t vL, units::velocity::meters_per_second_t vR);
 
   void ResetPose(frc::Pose2d pose);
   void ResetSamePose();
   void AddVisionMeasurement(const frc::Pose2d &visionPose, units::second_t timeStamp, const std::array<double, 3> &stdDevs);
   void AddVisionMeasurement(const frc::Pose2d &visionPose, units::second_t timeStamp);
-
-  void SeedFieldCentric();
 
   double GetRotationRateDegreesPerSecond();
 
@@ -76,4 +50,11 @@ private:
   const units::time::second_t m_samePoseTime = 0.5_s;
   const units::length::inch_t m_distanceThreshold{0.25};
   frc::Pose2d m_prevPose;
+  frc::Pose2d m_currentPose;
+
+  frc::Timer m_odometryTimer;
+  units::second_t m_lastTime{0_s};
+
+  // Kinematics object to help convert wheel speeds to robot speeds
+  frc::DifferentialDriveKinematics m_kinematics{DriveConstants::kTrackWidth};
 };
