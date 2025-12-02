@@ -1,0 +1,28 @@
+<!ELEMENT auton (snippet | primitive)* >
+
+<!ELEMENT snippet EMPTY>
+<!ATTLIST snippet file CDATA #IMPLIED>
+
+<!ELEMENT primitive (zone* ) >
+<!ATTLIST primitive 
+          id                ( DO_NOTHING | HOLD_POSITION | 
+                              TRAJECTORY_DRIVE | RESET_POSITION | RESET_POSITION_NO_VISION | DRIVE_STOP_MECH) "DO_NOTHING"
+		  pathUpdateOption 	(RIGHT_REEF_BRANCH | LEFT_REEF_BRANCH | REEF_ALGAE | FLOOR_ALGAE | CORAL_STATION | PROCESSOR | BARGE | NOTHING) "NOTHING"
+		  time				CDATA #IMPLIED
+		  delayOption		(START | PLACED_CORAL | REEF) "START"
+          headingOption     CDATA "IGNORE"
+          heading           CDATA "0.0"
+		  choreoname		CDATA #IMPLIED
+        deliveryOption  ( STATE_OFF | STATE_SCORE | STATE_REVERSE ) "STATE_OFF"
+
+		  visionAligment    ( UNKNOWN ) "UNKNOWN"
+>
+
+
+<!ELEMENT zone EMPTY >
+<!ATTLIST zone
+		filename CDATA #REQUIRED
+		
+>
+
+

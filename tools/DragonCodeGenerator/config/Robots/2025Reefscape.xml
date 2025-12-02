@@ -22,5 +22,22 @@
       <constDoubleParameters />
       <constBoolParameters />
     </mechanism>
+    <mechanism>
+      <GUID>8c91204b-b24d-405f-adf6-3516432f4feb</GUID>
+      <name>Climber</name>
+      <MotorControllers />
+      <closedLoopControlParameters />
+      <solenoid />
+      <servo />
+      <analogInput />
+      <digitalInput />
+      <cancoder />
+      <stateMotorControlData />
+      <states />
+      <doubleParameters />
+      <boolParameters />
+      <constDoubleParameters />
+      <constBoolParameters />
+    </mechanism>
   </Mechanisms>
 </topLevelAppDataElement>
