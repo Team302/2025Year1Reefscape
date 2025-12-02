@@ -2,4 +2,11 @@
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
 
+<primitive id = "TRAJECTORY_DRIVE"
+   
+   choreoname = "BlueLeftCoral_I"
+   time = "3.0"
+   />
+
+
 </auton>

@@ -194,6 +194,7 @@ void CyclePrimitives::RunDriveStop()
 										  string(), // ChoreoTrajectoryName
 										  ZoneParamsVector(),
 										  PrimitiveParams::VISION_ALIGNMENT::UNKNOWN,
+										  Delivery::STATE_NAMES::STATE_OFF,
 										  ChassisOptionEnums::DriveStateType::STOP_DRIVE);
 		m_driveStop = m_primFactory->GetIPrimitive(params);
 		m_driveStop->Init(params);

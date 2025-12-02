@@ -2,4 +2,8 @@
 <!DOCTYPE auton SYSTEM "auton.dtd">
 <auton>
 
+<primitive id = "DO_NOTHING"
+deliveryOption = "STATE_SCORE"
+time= "1.0"/>
+
 </auton>
