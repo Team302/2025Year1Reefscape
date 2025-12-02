@@ -33,9 +33,5 @@ std::optional<choreo::Trajectory<choreo::SwerveSample>> AutonUtils::GetTrajector
 std::optional<choreo::Trajectory<choreo::DifferentialSample>> AutonUtils::GetDifferentialTrajectoryFromPathFile(string pathName)
 {
     auto trajectory = choreo::Choreo::LoadTrajectory<choreo::DifferentialSample>(pathName);
-    if (trajectory.has_value() && FMSData::GetAllianceColor() == DriverStation::Alliance::kRed)
-    {
-        return trajectory.value().Flipped();
-    }
     return trajectory;
 }
