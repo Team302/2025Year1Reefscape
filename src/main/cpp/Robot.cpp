@@ -49,7 +49,7 @@ Robot::Robot()
 
     m_datalogger = DragonDataLoggerMgr::GetInstance();
 
-    auto path = AutonUtils::GetTrajectoryFromPathFile("BlueLeftCoral_I"); // load choreo library so we don't get loop overruns during autonperiodic
+    auto path = AutonUtils::GetDifferentialTrajectoryFromPathFile("BlueLeftCoral_I"); // load choreo library so we don't get loop overruns during autonperiodic
 }
 
 void Robot::RobotPeriodic()

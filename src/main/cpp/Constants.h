@@ -17,10 +17,10 @@
 
 namespace DriveConstants
 {
-    inline constexpr int LEFT_LEADER_ID = 4;
-    inline constexpr int LEFT_FOLLOWER_ID = 5;
-    inline constexpr int RIGHT_LEADER_ID = 1;
-    inline constexpr int RIGHT_FOLLOWER_ID = 2;
+    inline constexpr int LEFT_LEADER_ID = 1;
+    inline constexpr int LEFT_FOLLOWER_ID = 2;
+    inline constexpr int RIGHT_LEADER_ID = 4;
+    inline constexpr int RIGHT_FOLLOWER_ID = 5;
 
     inline constexpr int DRIVE_MOTOR_CURRENT_LIMIT = 60;
     inline constexpr units::meters_per_second_t MAX_DRIVE_SPEED = 3.87_mps;
