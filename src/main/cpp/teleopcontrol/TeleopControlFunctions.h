@@ -47,6 +47,8 @@ public:
         MANUAL_CLIMB_DOWN,
         SWITCH_DESIRED_CORAL_SIDE,
         SYSID_MODIFER,
+        MANUAL_CLIMB,
+        CHARLIE_BOX,
 
         // tip correction controls
         TIPCORRECTION_TOGGLE,

@@ -55,6 +55,12 @@ void ManualClimbState::InitKitBot2025()
 void ManualClimbState::Run()
 {
 	// Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("ManualClimbState"), string("Run"));
+
+	double charlieBoxTarget = TeleopControl::GetInstance()->GetAxisValue(TeleopControlFunctions::CHARLIE_BOX);
+	double manualClimbTarget = TeleopControl::GetInstance()->GetAxisValue(TeleopControlFunctions::MANUAL_CLIMB);
+
+	m_mechanism->UpdateTargetClimberPrecentOut(manualClimbTarget);
+	m_mechanism->UpdateTargetCharlieBoxPrecentOut(charlieBoxTarget);
 }
 
 void ManualClimbState::Exit()
