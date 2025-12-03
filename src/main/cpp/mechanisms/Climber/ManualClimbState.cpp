@@ -56,10 +56,10 @@ void ManualClimbState::Run()
 {
 	// Logger::GetLogger()->LogData(LOGGER_LEVEL::PRINT, string("ArrivedAt"), string("ManualClimbState"), string("Run"));
 
-	double charlieBoxTarget = TeleopControl::GetInstance()->GetAxisValue(TeleopControlFunctions::CHARLIE_BOX);
-	double manualClimbTarget = TeleopControl::GetInstance()->GetAxisValue(TeleopControlFunctions::MANUAL_CLIMB);
+	double charlieBoxTarget = m_boxLimiter * TeleopControl::GetInstance()->GetAxisValue(TeleopControlFunctions::CHARLIE_BOX);
+	double manualClimbTarget = m_climbSpeedLimiter * TeleopControl::GetInstance()->GetAxisValue(TeleopControlFunctions::MANUAL_CLIMB);
 
-	m_mechanism->UpdateTargetClimberPrecentOut(manualClimbTarget);
+	m_mechanism->UpdateTargetClimberPrecentOut(-manualClimbTarget);
 	m_mechanism->UpdateTargetCharlieBoxPrecentOut(charlieBoxTarget);
 }
 
@@ -79,6 +79,6 @@ bool ManualClimbState::AtTarget()
 bool ManualClimbState::IsTransitionCondition(bool considerGamepadTransitions)
 {
 	// To get the current state use m_mechanism->GetCurrentState()
-	return false;
-	// return (considerGamepadTransitions && TeleopControl::GetInstance()->IsButtonPressed(TeleopControlFunctions::EXAMPLE_MECH_FORWARD));
+
+	return (considerGamepadTransitions && m_mechanism->IsClimbMode());
 }

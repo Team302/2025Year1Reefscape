@@ -46,5 +46,7 @@ namespace ClimberStates
 		RobotIdentifier m_RobotId;
 		const double m_ClimberTarget = double(0);
 		const double m_CharlieBoxTarget = double(0);
+		double m_climbSpeedLimiter = 0.10;
+		double m_boxLimiter = 0.10;
 	};
 }

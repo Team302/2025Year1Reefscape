@@ -82,6 +82,7 @@ public:
 	void RunCommonTasks() override;
 	// void DataLog() override;
 
+	bool IsClimbMode() const { return m_climbMode == RobotStateChanges::ClimbMode::ClimbModeOn; }
 	void NotifyStateUpdate(RobotStateChanges::StateChange stchange, int value) override;
 
 	RobotIdentifier getActiveRobotId() { return m_activeRobotId; }
