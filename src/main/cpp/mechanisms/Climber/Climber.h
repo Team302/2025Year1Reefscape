@@ -82,6 +82,8 @@ public:
 	void RunCommonTasks() override;
 	// void DataLog() override;
 
+	void NotifyStateUpdate(RobotStateChanges::StateChange stchange, int value) override;
+
 	RobotIdentifier getActiveRobotId() { return m_activeRobotId; }
 
 	ctre::phoenix6::hardware::TalonFX *GetClimber() const { return m_Climber; }
@@ -104,6 +106,8 @@ private:
 	ctre::phoenix6::hardware::TalonFX *m_Climber;
 	ctre::phoenix6::hardware::TalonFX *m_CharlieBox;
 	ControlData *m_PrecentOut;
+
+	RobotStateChanges::ClimbMode m_climbMode;
 
 	void InitializeTalonFXClimberKitBot2025();
 	void InitializeTalonFXCharlieBoxKitBot2025();

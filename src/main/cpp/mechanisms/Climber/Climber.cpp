@@ -63,9 +63,12 @@ void Climber::CreateAndRegisterStates()
 
 Climber::Climber(RobotIdentifier activeRobotId) : BaseMech(MechanismTypes::MECHANISM_TYPE::CLIMBER, std::string("Climber")),
 												  m_activeRobotId(activeRobotId),
-												  m_stateMap()
+												  m_stateMap(),
+												  m_climbMode(RobotStateChanges::ClimbMode::ClimbModeOff)
+
 {
 	PeriodicLooper::GetInstance()->RegisterAll(this);
+	RobotState::GetInstance()->RegisterForStateChanges(this, RobotStateChanges::ClimbModeStatus_Int);
 	// InitializeLogging();
 }
 
@@ -293,6 +296,14 @@ ControlData *Climber::GetControlData(string name)
 		return m_PrecentOut;
 
 	return nullptr;
+}
+
+void Climber::NotifyStateUpdate(RobotStateChanges::StateChange statechange, int value)
+{
+	if (statechange == RobotStateChanges::StateChange::ClimbModeStatus_Int)
+	{
+		m_climbMode = static_cast<RobotStateChanges::ClimbMode>(value);
+	}
 }
 
 /* void Climber::DataLog(uint64_t timestamp)
