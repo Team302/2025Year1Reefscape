@@ -76,7 +76,7 @@ void TrajectoryDrive::Execute()
         auto desiredState = m_trajectory.value().SampleAt(m_timer.get()->Get()).value();
         if (m_chassis != nullptr)
         {
-            m_chassis->TankDrive(desiredState.vl, desiredState.vr);
+            m_chassis->TankDrive(-desiredState.vl, -desiredState.vr);
         }
     }
 }

@@ -39,7 +39,9 @@ CANDriveSubsystem::CANDriveSubsystem()
   // enable voltage compensation set to 12V. This helps normalize performance
   // over a wider range of battery charge at the cost of some peak performance
   // with fully charged batteries.
-  sparkConfig.VoltageCompensation(12.0);
+
+  sparkConfig.VoltageCompensation(10.0);
+  sparkConfig.SetIdleMode(rev::spark::SparkBaseConfig::IdleMode::kBrake);
   // enable current limit
   sparkConfig.SmartCurrentLimit(DRIVE_MOTOR_CURRENT_LIMIT);
   sparkConfig.Inverted(true);

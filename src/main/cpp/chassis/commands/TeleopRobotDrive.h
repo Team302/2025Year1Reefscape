@@ -40,4 +40,5 @@ private:
     TeleopControl *m_controller;
     units::velocity::meters_per_second_t m_maxSpeed;
     units::angular_velocity::degrees_per_second_t m_maxAngularRate;
+    const double m_rotationModifier = 0.75;
 };

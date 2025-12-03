@@ -3,10 +3,31 @@
 <auton>
 
 <primitive id = "TRAJECTORY_DRIVE"
-   
    choreoname = "BlueLeftCoral_I"
-   time = "3.0"
+   time = "2.0"
    />
 
+<primitive id = "DRIVE_STOP_MECH"
+deliveryOption = "STATE_SCORE"
+time = "2.0"
+/>
+<!-- 
+<primitive id = "TRAJECTORY_DRIVE"
+choreoname = "BlueLeftCSA_I"
+time = "3.0"
+/>
 
+<primitive id = "DO_NOTHING"
+time = "2.0"
+/>
+
+<primitive id = "TRAJECTORY_DRIVE"
+   choreoname = "BlueLeftCoral_L"
+   time = "2.0"
+   />
+
+   <primitive id = "DRIVE_STOP_MECH"
+deliveryOption = "STATE_SCORE"
+time = "2.0"
+/> -->
 </auton>
