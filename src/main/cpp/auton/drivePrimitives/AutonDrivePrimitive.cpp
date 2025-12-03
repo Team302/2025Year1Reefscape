@@ -74,6 +74,7 @@ void AutonDrivePrimitive::Init(PrimitiveParams *params)
     case PRIMITIVE_IDENTIFIER::DO_NOTHING:
     case PRIMITIVE_IDENTIFIER::DO_NOTHING_MECHANISMS:
     {
+        m_managedCommand = frc2::cmd::None();
         break;
     }
 

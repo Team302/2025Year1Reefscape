@@ -161,7 +161,7 @@ void CANDriveSubsystem::UpdateOdometry(units::velocity::meters_per_second_t vL, 
   units::second_t dt = currentTime - m_lastTime;
   m_lastTime = currentTime;
 
-  frc::DifferentialDriveWheelSpeeds wheelSpeeds{vL, vR};
+  frc::DifferentialDriveWheelSpeeds wheelSpeeds{-vL, -vR};
   frc::ChassisSpeeds chassisSpeeds = m_kinematics.ToChassisSpeeds(wheelSpeeds);
 
   frc::Twist2d twist{
