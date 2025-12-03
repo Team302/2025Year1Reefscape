@@ -118,6 +118,7 @@ void Robot::AutonomousPeriodic()
 void Robot::TeleopInit()
 {
     PeriodicLooper::GetInstance()->TeleopRunCurrentState();
+    frc2::CommandScheduler::GetInstance().CancelAll();
 }
 
 void Robot::TeleopPeriodic()
